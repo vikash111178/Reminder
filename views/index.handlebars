@@ -1,0 +1,102 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  
+  <div class="right-box">
+      <span class="search-box-div">   
+               <strong>Search:</strong> 
+               <input type="text" name="search" autocomplete="off"  id="myInput" onkeyup="myFunction()">
+               </span>  
+               <span>
+                    <a class="btn btn-secondar" href="/createReminder" ><i class="fa fa-bell" style="color:darkgrey"></i> Add Reminder</a>
+               </span>
+               </div>
+  <div class="table-responsive"> 
+    <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;">       
+        <thead>
+            <tr  style="text-align:center;">
+                <th>Date</th>
+                <th>Comment</th>                
+                <th>Action</th> 
+          </tr>
+        </thead>
+        <tbody  style="text-align:center;">
+            
+        </tbody> 
+    </table>
+   </div> 
+<script  type="text/javascript">
+$(document).ready(function(){   
+    GetTokenList();
+    setInterval(GetTokenList, 6000); //Set time interval
+    function GetTokenList(){
+    jQuery.support.cors = true;
+    $.ajax(
+    { 
+        type: "GET",
+        url: '/reminderlist',
+        data: "{}",
+        contentType: "application/json; charset=utf-8",
+        dataType: "json",
+        cache: false,
+        success: function (content) {   
+         //clear datatable
+       // $('#sampleTable').DataTable().clear();
+
+        //destroy datatable
+        $('#sampleTable').DataTable().destroy();  
+        $('#sampleTable').DataTable({         
+                                        data:content,
+                                        "columns": [                         
+                                                        { data:"date"},
+                                                        { data: "comment" },
+                                                        {
+                                                        mRender: function (data, type, row) {
+                                                            return '<a href=/edit/'+row._id+'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a>  <a href=/delete/'+row._id+' ><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>'
+                                                        }
+                        }                                                                            
+                                                    ]
+                                       
+                                    } );       
+                },        
+                    error: function (msg)
+                     {            
+                        console.log(msg.responseText);
+                     }
+            });
+    }
+    
+});
+
+</script>
+   <script>
+        //Search token details base on pair/token
+        function myFunction() 
+        {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("sampleTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+            } else {
+            tr[i].style.display = "none";
+            }
+            }       
+            }
+            
+        }
+function Remove() 
+{          
+        if (confirm("Are you sure you want to delete?") == true) 
+        {
+            return true;
+        } 
+        else 
+        {
+            return false;
+        }
+}
+   </script>

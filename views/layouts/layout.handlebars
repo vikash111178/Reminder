@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+  <head> 
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title >Reminder</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="robots" content="all,follow">
+    <link rel="icon" href="/images/download.png" type="image/PNG" sizes="32x32">
+    <!-- Bootstrap CSS-->
+    <link rel="stylesheet" href="/admin/vendor/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome CSS-->
+    <link rel="stylesheet" href="/admin/vendor/font-awesome/css/font-awesome.min.css">
+    <!-- Custom Font Icons CSS-->
+    <link rel="stylesheet" href="/admin/css/font.css">
+    <!-- Google fonts - Muli-->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Muli:300,400,700">
+    <!-- theme stylesheet-->
+    <link rel="stylesheet" href="/admin/css/style.default.css" id="theme-stylesheet">
+    <!-- Custom stylesheet - for your changes-->
+    <link rel="stylesheet" href="/admin/css/custom.css">
+    
+  </head>
+  <body>
+    {{#if user}}
+    <header class="header">   
+      <nav class="navbar navbar-expand-lg">        
+        <div class="container-fluid d-flex align-items-center justify-content-between">
+          <div class="navbar-header">
+            <!-- Navbar Header-->
+            <a href="/" class="navbar-brand cstm-navbar-brand">
+         
+               <div class="brand-text brand-big  visible"><strong style="color:#e50000">Reminder</strong></div>
+           <div class="brand-text brand-sm "><strong style="color:#e50000">Reminder</strong></div>
+            </a>
+          
+          </div>
+          <div class="right-menu list-inline no-margin-bottom">  
+             
+            <!-- Search Box -->
+              <div class="list-inline-item logout">   
+             
+            </div>
+            <!--End-->
+            <!--Create token menu-->
+              <div class="list-inline-item logout">    
+                        
+               
+            </div>
+            <!--End-->
+            <!--Refersh-->
+            <div class="list-inline-item logout">    
+                        
+            
+            </div>            
+             <div class="list-inline-item logout">    
+                        
+                <form id="form1" action="/mutevolume" method="POST">
+            
+          </form>    
+            </div>
+            <!--End-->
+             <!-- Log out -->
+              <div class="list-inline-item logout">    
+                        
+                <a id="logout" href="/users/logout" class="nav-link">Logout <i class="icon-logout"></i></a>
+            </div>
+             <!--End Log out -->
+          </div>
+        </div>
+      </nav>
+    </header>
+    <div class="d-flex align-items-stretch">
+        {{!-- {{#if user.isAdmin}} --}}
+      <!-- Sidebar Navigation-->
+      <nav id="sidebar" >
+        <!-- Sidebar Header--> 
+         <div class="sidebar-header d-flex align-items-center">
+          {{!-- <div class="avatar"><img src="/admin/img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div> --}}
+          <div class="title">
+            <h1 class="h4">{{user.username}}</h1>
+            {{!-- <p>Admin</p> --}}
+          </div>
+        </div>
+        <!-- Sidebar Navidation Menus-->        
+        <ul class="list-unstyled">
+                <li class="active"><a href="/"> <i class="icon-dashboard"></i>Dashboard </a></li>
+                {{!-- <li class="active"><a href="/admintokenview"> <i class="fa fa-bars"></i>View TokenList </a></li> --}}
+                <li class="active"><a href="/reminder"> <i class="fa fa-bell"></i>Reminder </a></li> 
+                 <li class="active"><a href="/Viewgroup"> <i class="fa fa fa-group"></i>Group List </a></li>               
+       
+        </ul>    
+       
+      </nav>
+     <!-- Sidebar Navigation end-->
+    
+   {{!-- {{/if}} --}}
+
+   <div class="page-content" style="width:100%">
+       <div class="page-container">
+         <div class="col-md-12">
+           <div class="tile">
+             <div class="tile-body">
+               {{{body}}}
+             </div>
+           </div>
+         </div>
+       </div>
+           </div>
+            {{#if user.isAdmin}}
+             {{else}}
+             <!--Footer-->
+         <footer class="footer">
+         <div class="footer__block block no-margin-bottom">
+           <div class="container-fluid text-center">
+           {{!-- <p class="no-margin-bottom">Price information  provided by Cryptocompare API <a href="https://www.cryptocompare.com/api" target=" ">Cryptocompare API</a>.</p> --}}
+           </div>
+         </div>
+       </footer>
+            {{/if}}
+
+   </div>
+     {{else}}
+      {{#if success_msg}}
+        <div class="alert alert-success">{{success_msg}}</div>
+      {{/if}}
+
+      {{#if error_msg}}
+        <div class="alert alert-success">{{error_msg}}</div>
+      {{/if}}
+
+      {{#if error}}
+        <div class="alert alert-success">{{error}}</div>
+      {{/if}}
+      {{{body}}}
+    {{/if}}
+    <!-- JavaScript files-->
+    <script src="/admin/vendor/jquery/jquery.min.js"></script>
+    <script src="/admin/vendor/popper.js/umd/popper.min.js"> </script>
+    <script src="/admin/vendor/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/admin/vendor/jquery.cookie/jquery.cookie.js"> </script>    
+    <script src="/admin/vendor/jquery-validation/jquery.validate.min.js"></script>   
+    <script src="/admin/js/front.js"></script>
+     <!-- Data table plugin-->
+    <script type="text/javascript" src="/js/plugins/jquery.dataTables.min.js"></script>
+    <script type="text/javascript" src="/js/plugins/dataTables.bootstrap.min.js"></script>
+    <script type="text/javascript">$('#sampleTable').DataTable();</script>
+  </body>
+</html>
