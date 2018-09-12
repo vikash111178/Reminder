@@ -12,6 +12,7 @@
     <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;">       
         <thead>
             <tr  style="text-align:center;">
+                <th><i class="fa fa fa-plus-circle" style="color:darkgrey"></i> Add Member</th>
                 <th>Group Name</th> 
                 <th>Total</th>               
                 <th>Create Date</th>
@@ -23,6 +24,7 @@
         <tbody  style="text-align:center;">
               {{#each data}}      
             <tr>
+               <td><a href="/addnewmember/{{_id}}" style="color:royalblue">Add Member</a></td>
                 <td><a href="/viewmemberlist/{{_id}}" style="color:royalblue">{{groupname}}</a></td>
                 <td>{{total}}</td>               
                 <td>{{createdAt}}</td>

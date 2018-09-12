@@ -216,7 +216,7 @@ router.post('/edit', function (req, res) {
 
 router.get('/Viewgroup', ensureAuthenticated, function(req, res){ 
     Group.find(function(err,content){ 
-      res.render('Viewgroup', {data:content }); 
+      res.render('Viewgroup', {data:content })  
         
     })
 });
@@ -396,8 +396,9 @@ router.get('/viewmemberlist/:id',function(req,res){
   var conditionQuery = {groupid:uid };  
   User.find(conditionQuery,function(err, content) {           
     res.render('memberlist', { data:content });
-          
+              
   })  
+  
 });
 //delete memberlist
 router.get('/deletemember/:id', function(req, res) { 
