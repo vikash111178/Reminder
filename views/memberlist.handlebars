@@ -4,7 +4,9 @@
                <strong>Search:</strong> 
                <input type="text" name="search" autocomplete="off"  id="myInput" onkeyup="myFunction()">
                </span>  
-               
+                 <span>
+                    <a class="btn btn-secondar" href="/Viewgroup" ><i class="fa fa-group" style="color:darkgrey"></i> Group list</a>
+               </span>
                </div>
   <div class="table-responsive"> 
     <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;">       
@@ -13,8 +15,7 @@
                 <th>Name</th>                
                 <th>Email</th>
                 <th>Mobile</th>
-                <th>Action</th>
-                
+              
           </tr>
         </thead>
         <tbody  style="text-align:center;">
@@ -23,7 +24,7 @@
                 <td><i class="fa fa-user" aria-hidden="true"></i>  {{fullname}}</a></td>               
                 <td>{{email}}</td>
                 <td>{{mobile}}</td>
-                <td><a  href='/deletegroup/{{_id}}' class="confirmation"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td>
+                {{!-- <td><a  href='/deletemember/{{_id}}' class="confirmation"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td> --}}
             </tr>
             {{/each}}
         </tbody> 

@@ -21,13 +21,13 @@
                 <div class="form-group row">
                   <label class="control-label col-md-3">Email</label>
                   <div class="col-md-7">
-                    <input type="text" class="form-control col-md-12" rows="4"   value="" placeholder="Enter your email" id="email" autocomplete="off" name="email" required>
+                    <input type="text" class="form-control col-md-12" rows="4"   value="" placeholder="Enter your email" id="email" autocomplete="off"  pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,3}$" name="email" required data-msg="Please enter a valid email address" required>
                   </div>
                 </div>
                <div class="form-group row">
                   <label class="control-label col-md-3">Mobile</label>
                   <div class="col-md-7">
-                    <input type="text" class="form-control col-md-12" rows="4"   value="" placeholder="Enter your mobile" id="mobile" autocomplete="off" name="mobile" required>
+                    <input type="text" class="form-control col-md-12" rows="4" onkeypress="return isNumberKey(event)"  value="" placeholder="Enter your mobile" id="mobile" autocomplete="off" name="mobile" pattern="[2-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9" required>
                   </div>
                 </div>
                 <div class="form-group row">
@@ -75,24 +75,7 @@
              return false;
           return true;
        }
-        function isMax()
-       {
-          debugger;
-          let min =  document.getElementById("min").value;
-          let max =  document.getElementById("max").value;
-          if(parseInt(max) < parseInt(min))
-          {
-            document.getElementById("msgerror").innerHTML= "min price shuld be less than max price";
-            return false;
-          }
-          else
-          {
-            document.getElementById("msgerror").innerHTML= "";
-            return true;
-          }
-
-          
-       }
+        
         
        </script>
 

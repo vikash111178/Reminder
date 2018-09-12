@@ -24,5 +24,7 @@ module.exports.createMemberList = function(newMemberList, callback){
 module.exports.findMemberList=function(conditionQuery,callback){
     MemberList.find(conditionQuery,callback)
  }
-
+ module.exports.deleteMemberList=function(conditionDeleteQuery,callback){
+    MemberList.deleteOne(conditionDeleteQuery,callback)
+ }
  

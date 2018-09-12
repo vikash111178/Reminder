@@ -128,7 +128,7 @@ router.post('/createReminder', function (req, res) {
 
 });  
  
-//Delete Reminder
+//Delete Home Reminder
 router.get('/delete/:id', function(req, res) { 
   var db = req.db; 
   var uid = req.params.id.toString();    
@@ -140,6 +140,26 @@ router.get('/delete/:id', function(req, res) {
           console.log("1 document delete");    
         });
         res.redirect('/');  
+      }
+      catch(error)
+      {
+        req.flash('error_msg',error.toString());
+        res.redirect('error');
+      }
+
+});
+//Delete reminder
+router.get('/deletereminder/:id', function(req, res) { 
+  var db = req.db; 
+  var uid = req.params.id.toString();    
+    var conditionQuery = {_id:uid };
+      try
+      {
+        Token.deleteToken(conditionQuery, function(err, res) {
+          if (err) throw err;
+          console.log("1 document delete");    
+        });
+        res.redirect('/reminder');  
       }
       catch(error)
       {
@@ -375,6 +395,42 @@ router.get('/viewmemberlist/:id',function(req,res){
     res.render('memberlist', { data:content });
     console.log(content);        
   })  
+});
+//delete memberlist
+router.get('/deletemember/:id', function(req, res) { 
+  var db = req.db; 
+  var uid = req.params.id.toString();    
+    var conditionQuery = {_id:uid };
+    
+      try
+      {
+        MemberList.deleteMemberList(conditionQuery, function(err, res) {
+          if (err) throw err;
+          console.log("1 Member delete");    
+        });
+        res.redirect('/Viewgroup');
+        // MemberList.find(conditionQuery,function(err,groupid){
+        //   var conditionGroupid=groupid[0].groupid
+        //   console.log(conditionGroupid)
+        //   var conditionQuerytotal={_id:conditionGroupid};
+        //   MemberList.count(conditionQuery,function(err,total){ 
+        //     var totalmemberlist=total+1;//total member 
+        //     //update total member in group document         
+        //     newValues={ $set: {total:totalmemberlist}}; 
+        //     Group.updateTotal(conditionQuerytotal,newValues,function(err,res){
+        //       if (err) throw err;
+        //       console.log("Total  updated");
+        //     })
+        //   });  
+        // });
+         
+      }
+      catch(error)
+      {
+        req.flash('error_msg',error.toString());
+        res.redirect('error');
+      }
+
 });
 //get reminder details by user id
 router.get('/reminder',ensureAuthenticated,function(req,res){
