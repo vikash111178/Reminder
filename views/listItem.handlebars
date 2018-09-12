@@ -1,0 +1,119 @@
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+  
+  <div class="right-box" > 
+      <span class="search-box-div">   
+               <strong>Search:</strong> 
+               <input type="text" name="search" autocomplete="off"  id="myInput" onkeyup="myFunction()">
+               </span>  
+               <span>
+                    <a class="btn btn-secondar" href="/createList" ><i class="fa fa-plus-circle" style="color:darkgrey"></i> Add List</a>
+               </span>
+               
+               <body onload="datarow()">
+  <div class="table-responsive"   > 
+    <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;"  >       
+        <thead>
+            <tr style="display:none" >
+                <td id="row">{{user.username}}</td>
+                
+            </tr>
+            <tr  style="text-align:center;" >
+                
+                <th>User Name</th>
+                <th>Item Name</th>
+                <th>Item Price</th>                
+                 <th>Action</th>
+          </tr>
+        </thead>
+        <tbody  style="text-align:center;">
+            {{#each data}}
+            <tr>
+                
+                <td id="col">{{username}}</td>
+                <td>{{productname}}</td>
+                <td>{{productprice}}</td>
+              <td id="col2">  
+                  <a  href='/editlist/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" style="display:none"></i></a><n/> <a  href=/deleteitmlst/{{_id}}><i class="fa fa-trash fa-2x" aria-hidden="true" style="display:none"></i></a>
+                </td>
+            </tr>
+            {{/each}}
+        </tbody> 
+    </table>
+   </div> 
+</body>
+
+   <script>
+        //Search token details base on pair/token
+        function myFunction() 
+        {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("sampleTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+            if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+            tr[i].style.display = "";
+            } else {
+            tr[i].style.display = "none";
+            }
+            }       
+            }
+            
+        }
+//Delete record alert message.
+function RemoveCurrencyList() 
+{          
+        if (confirm("Are you sure you want to delete?") == true) 
+        {
+            return true;
+        } 
+        else 
+        {
+            return false;
+        }
+}
+
+function datarow()
+{
+    
+    var tr,table,i,j,ii,jj,celles,storevalues,values;
+     table = document.getElementById("sampleTable");
+     tr = table.getElementsByTagName("tr");
+    for(i=0; i<=0; i++)
+    {
+        celles=tr[i].getElementsByTagName('td');
+        for(j=0; j<celles.length;j++)
+        {
+            if(celles[j].id=="row")
+            {
+            storevalues=celles[0].innerText;
+            } 
+
+        }
+
+    }
+
+    for(ii=2; ii<tr.length;ii++)
+    {
+        celles=tr[ii].getElementsByTagName('td');
+        for(jj=0; jj<celles.length;jj++)
+        {
+            if(celles[jj].id=="col")
+            {
+                values=celles[jj].innerText
+           if(storevalues==values)
+           {
+             celles[3].getElementsByTagName("i")[0].style.display = "block";
+              celles[3].getElementsByTagName("i")[1].style.display = "block"
+           }
+            } 
+
+        }
+
+    }
+    //alert("hay",col.length);
+}
+   </script>

@@ -6,6 +6,7 @@ var request = require('request');
     flash = require('connect-flash');
     Group=require('../models/group');
     MemberList=require('../models/memberlist');
+    Productlist = require('../models/list')
    
 function ensureAuthenticated(req, res, next)
 {
@@ -258,7 +259,7 @@ router.post('/addgroup', function (req, res) {
   var db = req.db; 
   var  groupid = req.params.id; 
   var conditionQuery = {_id:groupid };
-  console.log('goooo',conditionQuery) ;
+ console.log(conditionQuery) ;
   var userid= req.user._id;
 	var groupname=req.body.groupname;
   var createdAt;
@@ -298,6 +299,9 @@ router.post('/addgroup', function (req, res) {
 
 }); 
 //route of add new member 
+router.get('/addnewmember',ensureAuthenticated,function(req,res){
+  res.render('addnewmember')
+})
 router.get('/addnewmember/:id', ensureAuthenticated, function(req, res){
   var db = req.db; 
   var  uid = req.params.id; 
@@ -310,13 +314,13 @@ router.get('/addnewmember/:id', ensureAuthenticated, function(req, res){
 //Add new member
 router.post('/newMember',function(req,res){
  var groupid=req.body.groupid;
- var fullname=req.body.fullname;
+ var username=req.body.fullname;
  var email=req.body.email;
- var mobile=req.body.mobile;
+ var mobile=req.body.mobile; 
  var password=req.body.password;
  var conditionQuery={groupid:groupid};
  var conditionQuerytotal={_id:groupid};
- var totalmemberlist;
+
  	//validation
    req.checkBody('fullname', 'fullname value is required').notEmpty();
    req.checkBody('email', 'email value is required').notEmpty();
@@ -330,9 +334,9 @@ router.post('/newMember',function(req,res){
 }
 else
 {      
-    var newMemberList = new MemberList({
+    var newMemberList = new User({      
       groupid:groupid,
-      fullname: fullname, 
+      username: username, 
       email:email,     
       mobile:mobile,
       password:password      
@@ -340,13 +344,13 @@ else
      //method start for add group
      try
      {             
-      MemberList.createMemberList(newMemberList, function(err, newMemberList){
+      User.createUser(newMemberList, function(err, newMemberList){
               if(err) throw err; 
               console.log("Add group")                         
             });           
           res.redirect('Viewgroup');  
           //Count total member   
-          MemberList.count(conditionQuery,function(err,total){ 
+          User.count(conditionQuery,function(err,total){ 
           var totalmemberlist=total+1;//total member 
           //update total member in group document         
           newValues={ $set: {total:totalmemberlist}}; 
@@ -389,11 +393,10 @@ router.get('/deletegroup/:id', function(req, res) {
 router.get('/viewmemberlist/:id',function(req,res){
   var db = req.db; 
   var  uid = req.params.id; 
-  var conditionQuery = {groupid:uid };
-  console.log(conditionQuery);
-  MemberList.find(conditionQuery,function(err, content) {           
+  var conditionQuery = {groupid:uid };  
+  User.find(conditionQuery,function(err, content) {           
     res.render('memberlist', { data:content });
-    console.log(content);        
+          
   })  
 });
 //delete memberlist
@@ -441,5 +444,143 @@ router.get('/reminder',ensureAuthenticated,function(req,res){
    console.log(content);
  })
  
+});
+
+//***************itemlist.handlebars/createlist.handbars****************************//
+//get list
+router.get('/createList', ensureAuthenticated, function(req, res){
+  res.render('createList');
+});
+
+router.get('/listItem', ensureAuthenticated, function(req, res){
+  Productlist.find(function(err,content){
+    
+    res.render('listItem', {data:content });
+
+  })
+});
+
+
+//Create List
+router.post('/createList', function (req, res) {  
+  var userid= req.user._id;
+  var username=req.user.username;
+  var productname=req.body.listname;
+  var productprice=req.body.listprice;   
+	//validation
+	req.checkBody('listname', 'list name value is required').notEmpty();
+	req.checkBody('listprice', 'list price is required').notEmpty();
+	var errors=req.validationErrors();
+	if(errors){   
+		res.render('createList', {
+			errors:errors
+		});
+	}
+  else
+  {      
+      var newList = new Productlist({
+        userid: userid, 
+        username: username,
+        productname: productname,
+        productprice: productprice,        
+        
+      });        
+       //method start for add reminder
+       try
+       {             
+        Productlist.createList(newList, function(err, listToken){
+                if(err) throw err; 
+                console.log("Add Recored")           
+              });  
+              res.redirect('/listItem');
+         }
+      catch(error)
+      {
+        req.flash('error_msg',error.toString());
+        res.redirect('error');
+      }
+    
+    
+  }
+
+}); 
+
+/* Edit item List Update */
+router.post('/editlist', function (req, res) {  
+  var id=req.body.id.toString(); 
+  var productname=req.body.listname;
+  var productprice=req.body.listprice; 
+  var  conditionQuerys = {_id:id};  
+  try
+  {
+    newValues = { $set: {productname:productname,productprice:productprice}};        
+    Productlist.updateTokenbyId(conditionQuerys, newValues, function(err, res)
+      {
+          if (err) throw err;
+          console.log("listItem  updated");
+      });
+    res.redirect('/listItem'); 
+
+  }
+  catch(error)
+  {
+    req.flash('error_msg',error.toString());
+    res.redirect('error');
+  }
+  
+});
+
+//Find value and bind textbox for edit listitem
+router.get('/editlist/:id', function(req, res) 
+{ 
+  var db = req.db; 
+    var  uid = req.params.id;
+      
+    var conditionQuery = {_id:uid };   
+    try
+    {
+      Productlist.find(conditionQuery,function(err, content) 
+      {      
+        res.render('editlist', {  data:content[0] });    
+      })
+    }
+    catch(error)
+    {
+      req.flash('error_msg',error.toString());
+      res.redirect('error');
+    }
+
+});
+    
+
+//Delete list Item
+router.get('/deleteitmlst/:id', function(req, res) { 
+  var db = req.db; 
+  var uid = req.params.id.toString();    
+    var conditionQuery = {_id:uid };
+      try
+      {
+       
+        Productlist.deleteToken(conditionQuery, function(err, res) {
+          if (err) throw err;
+         // Swal("Hello world!");
+          console.log("1 document delete");    
+          console.log(_id);  
+        });
+        res.redirect('/listItem');  
+      }
+      catch(error)
+      {
+        req.flash('error_msg',error.toString());
+        res.redirect('error');
+      }
+
+});
+//********************Ens**************************************************************** */
+
+
+//profile
+router.get('/profile',function(req,res){
+  res.render('profile');
 });
 module.exports = router;

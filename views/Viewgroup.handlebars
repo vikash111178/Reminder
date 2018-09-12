@@ -5,7 +5,7 @@
                <input type="text" name="search" autocomplete="off"  id="myInput" onkeyup="myFunction()">
                </span>  
                <span>
-                    <a class="btn btn-secondar" href="/addgroup" ><i class="fa fa fa-group" style="color:darkgrey"></i> Create Group</a>
+                    <a class="btn btn-secondar" href="/addgroup" ><i class="fa fa fa-plus-circle" style="color:darkgrey"></i> Create Group</a>
                </span>
                </div>
   <div class="table-responsive"> 
@@ -15,7 +15,7 @@
                 <th>Group Name</th> 
                 <th>Total</th>               
                 <th>Create Date</th>
-                <th>MemberList</th>
+                {{!-- <th>MemberList</th> --}}
                 <th>Action</th>
                 
           </tr>
@@ -23,10 +23,10 @@
         <tbody  style="text-align:center;">
               {{#each data}}      
             <tr>
-                <td><a href="/addnewmember/{{_id}}" style="color:royalblue">{{groupname}}</a></td>
+                <td><a href="/viewmemberlist/{{_id}}" style="color:royalblue">{{groupname}}</a></td>
                 <td>{{total}}</td>               
                 <td>{{createdAt}}</td>
-                <td><a href='viewmemberlist/{{_id}}'><i class="fa fa fa-group" aria-hidden="true" ></i>ViewMember</a></td>
+                {{!-- <td><a href='viewmemberlist/{{_id}}'><i class="fa fa fa-group" aria-hidden="true" ></i>ViewMember</a></td> --}}
                 <td><a href='editgroup/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a> <a  href='/deletegroup/{{_id}}' class="confirmation"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td>
             </tr>
             {{/each}}

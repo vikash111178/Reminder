@@ -1,17 +1,26 @@
 var mongoose = require('mongoose');
 //User Schema
-var MemberSchema = mongoose.Schema({
-    groupid:{type:String},
-    fullname: {
+var UserSchema = mongoose.Schema({
+    username: {
         type: String,
         index: true
     },
-    email:{type:String},
+    password: {
+        type: String
+    },
+    email:{
+        type: String
+    },
+    groupid:{type:String},
     mobile: {type:Number},
-    password:{type:String}
+    
+    resetPasswordToken:{type:String} ,
+    resetPasswordExpires: Date
+  
    
 });
-var MemberList = module.exports = mongoose.model('MemberList', MemberSchema);
+
+var MemberList = module.exports = mongoose.model('Memberlist', UserSchema);
 module.exports.createMemberList = function(newMemberList, callback){
     bcrypt.genSalt(10, function(err, salt) {
         bcrypt.hash(newMemberList.password, salt, function(err, hash) {

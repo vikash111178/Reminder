@@ -54,6 +54,11 @@
                       <input id="email" type="email" autocomplete="off" pattern="[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{1,3}$" name="email" required data-msg="Please enter a valid email address" class="input-material">
                       <label for="email" class="label-material">Email Address      </label>
                     </div>
+                     <div class="form-group-material">
+                        <input id="text" type="text" autocomplete="off" onkeypress="return isNumberKey(event)" pattern="[2-9]{1}[0-9]{9}" name="mobile" required data-msg="Phone number with 7-9 and remaing 9 digit with 0-9" class="input-material">
+                       {{!-- <input type="text"  onkeypress="return isNumberKey(event)"  value="" placeholder="Enter your mobile" id="mobile" autocomplete="off" name="mobile" pattern="[2-9]{1}[0-9]{9}" title="Phone number with 7-9 and remaing 9 digit with 0-9" required> --}}
+                      <label for="email" class="label-material">Mobile      </label>
+                    </div>
                     <div class="form-group-material">
                       <input id="password" type="password" name="password" autocomplete="off" required data-msg="Please enter your password" class="input-material">
                       <label for="password" class="label-material">Password        </label>
@@ -100,8 +105,16 @@
                 alert("Enter a valid email");
                 return false;
                 }
-        }   
-
+        }  
+    function isNumberKey(evt)
+       {
+          var charCode = (evt.which) ? evt.which : evt.keyCode;
+          if (charCode != 46 && charCode > 31 
+            && (charCode < 48 || charCode > 57))
+             return false;
+          return true;
+       } 
+</script>
   </body>
 
 </html>

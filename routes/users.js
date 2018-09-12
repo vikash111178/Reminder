@@ -34,6 +34,7 @@ router.get('/login', function (req, res) {
 router.post('/register', function (req, res) {	
 	var username=req.body.username;
 		email=req.body.email;
+		mobile=req.body.mobile;
 		password=req.body.password;
 		password2= req.body.password2;
 	//validation
@@ -53,6 +54,7 @@ router.post('/register', function (req, res) {
 		var newUser = new User({			
 				email: email,
 				username: username,
+				mobile:mobile,
 				password: password,
 				secretToken:secretToken 
 		});								
@@ -79,8 +81,8 @@ router.post('/register', function (req, res) {
 		 });
 	 }
  });
-passport.use(new LocalStrategy(function(username, password, done){
-	User.getUserByUsername(username, function(err, user){
+passport.use(new LocalStrategy(function(email, password, done){
+	User.getUserByUsername(email, function(err, user){
 		if(err) 
 		{
 			//throw err;
@@ -326,4 +328,6 @@ router.post('/reset/:token',function(req,res){
 	
 
 });
+
+
 module.exports = router;
