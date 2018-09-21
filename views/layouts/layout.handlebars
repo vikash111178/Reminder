@@ -29,12 +29,16 @@
         <div class="container-fluid d-flex align-items-center justify-content-between">
           <div class="navbar-header">
             <!-- Navbar Header-->
-            <a href="/" class="navbar-brand cstm-navbar-brand">
-         
-               <div class="brand-text brand-big  visible"><strong style="color:#e50000">Reminder</strong></div>
-           <div class="brand-text brand-sm "><strong style="color:#e50000">Reminder</strong></div>
+            <a href="#" class="navbar-brand cstm-navbar-brand">
+        {{#if user.isAdmin}}
+               <div class="brand-text brand-big  visible"><strong style="color:#e50000">Reminder {{ user.groupname}}</strong></div>
+           <div class="brand-text brand-sm "><strong style="color:#e50000">Reminder {{user.groupname}}</strong></div>
             </a>
-          
+          {{else}}
+           <div class="brand-text brand-big  visible"><strong style="color:#e50000"> {{ user.groupname}}</strong></div>
+           <div class="brand-text brand-sm "><strong style="color:#e50000"> {{user.groupname}}</strong></div>
+            </a>
+          {{/if}}
           </div>
           <div class="right-menu list-inline no-margin-bottom">  
              
@@ -45,7 +49,7 @@
             <!--End-->
             <!--Create token menu-->
               <div class="list-inline-item logout">    
-                         <a class="btn btn-secondar" href="/createReminder" >Balance <i class="fa fa-inr" style="color:darkgrey"></i> 0.00</a>
+                         <a class="btn btn-secondar" href="#" >Balance <i class="fa fa-inr" style="color:darkgrey"></i> {{user.avgbalance}}</a>
                
             </div>
             <!--End-->
@@ -83,14 +87,33 @@
         </div>
         <!-- Sidebar Navidation Menus-->        
         <ul class="list-unstyled">
+          {{#if user.isAdmin}}
                 <li class="active"><a href="/"> <i class="icon-dashboard"></i>Dashboard </a></li>
                    {{!-- <li class="active"><a href="/memberlist"> <i class="fa fa-user-circle-o"></i>Member List </a></li>           --}}
                 {{!-- <li class="active"><a href="/admintokenview"> <i class="fa fa-bars"></i>View TokenList </a></li> --}}
                 <li class="active"><a href="/reminder"> <i class="fa fa-bell"></i>Reminder </a></li> 
                  <li class="active"><a href="/Viewgroup"> <i class="fa fa fa-group"></i>Group List </a></li>
-                <li class="active"><a href="/listItem"> <i class="fa fa-list-alt" aria-hidden="true"></i>List Item </a></li> 
-                   <li class="active"><a href="/profile"> <i class="fa fa fa-user"></i>Profile </a></li>               
-       
+                   <li class="active"><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>List Items </a>
+                 <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                   <li><a href="/listItem"><i class="fa fa-list-alt" aria-hidden="true"></i>All Items</a></li>
+                   <li><a href="/myitems"><i class="fa fa-list-alt" aria-hidden="true"></i>My Items</a></li>                  
+                 </ul>
+               </l
+                   <li class="active"><a href="/profile"> <i class="fa fa fa-user"></i>Profile </a></li>
+                 {{else}}
+                   <li class="active"><a href="/"> <i class="fa fa-group" aria-hidden="true"></i>Members </a></li>
+               <li class="active"><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>List Items </a>
+                 <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
+                   <li><a href="/listItem"><i class="fa fa-list-alt" aria-hidden="true"></i>All Items</a></li>
+                   <li><a href="/myitems"><i class="fa fa-list-alt" aria-hidden="true"></i>My Items</a></li>                  
+                 </ul>
+               </li>
+               <li>
+                {{!-- <li class="active"><a href="/listItem"> <i class="fa fa-list-alt" aria-hidden="true"></i>List Item </a></li> --}}
+                
+                <li class="active"><a href="/profile"> <i class="fa fa fa-user"></i>Profile </a></li>
+                                  
+       {{/if}}
         </ul>    
        
       </nav>

@@ -11,6 +11,7 @@ var mongoose = require('mongoose');
 var config=require('./models/config');       
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var addmoney=require('./routes/balance');
 //var member=require('./routes/member');
 
 
@@ -74,8 +75,8 @@ app.use(flash());
 
 //Route
 app.use('/', routes);
-app.use('/users', users); 
-//app.use('/member',member);
+app.use('/users', users);
+app.use('/addmoney',addmoney);
 // Global Vars
 app.use(function (req, res, next) {
   res.locals.success_msg = req.flash('success_msg');

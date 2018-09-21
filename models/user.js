@@ -15,7 +15,11 @@ var UserSchema = mongoose.Schema({
     },
     groupid:{type:String},
     mobile: {type:Number},
-    
+    balance: { type: Number, default: 0.01 },
+    avgbalance:{type:Number,default:0.00},
+    selfSpand:{type:Number,default:0.00},
+    isAdmin:{type:Boolean},  
+    groupname:{type:String},  
     resetPasswordToken:{type:String} ,
     resetPasswordExpires: Date
   

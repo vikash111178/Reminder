@@ -14,7 +14,8 @@ var ListSchema = mongoose.Schema({
     productprice: {
         type:Number,
         
-    }
+    },
+    groupid:{type:String}
      
 });
 
@@ -38,6 +39,6 @@ module.exports.updateTokenbyId = function(conditionQuerys, newValues, callback){
     listToken.deleteOne(conditionDeleteQuery,callback)
  }
 
-
+ 
 
  

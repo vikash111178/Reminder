@@ -6,7 +6,7 @@ var request = require('request');
     flash = require('connect-flash');
     Group=require('../models/group');
     MemberList=require('../models/memberlist');
-    Productlist = require('../models/list')
+    Productlist=require('../models/list');
    
 function ensureAuthenticated(req, res, next)
 {
@@ -26,62 +26,68 @@ router.get('/createReminder', ensureAuthenticated, function(req, res){
 });
 
 router.get('/', ensureAuthenticated, function(req, res){
-  res.render('index');
+    var groupid=req.user.groupid     
+     var conditionQuery = {groupid:groupid };  
+    User.find(conditionQuery,function(err, content) {           
+     res.render('index', { data:content });
+               
+   });  
+  //res.render('index');
 });
 /**Get details using api */
-router.get('/reminderlist', ensureAuthenticated, function(req, res) {  
-  var isAdmin=req.user.isAdmin; 
-  try
-  {    
-    if(isAdmin == true)//
-    {
-          Token.aggregate([
-            {
-                  $lookup:
-                        {
-                          from:'reminders',
-                          localField:'_id',
-                          foreignField:'_id',
-                          as:'reminderlist'
-                        }
-            }
+// router.get('/reminderlist', ensureAuthenticated, function(req, res) {  
+//   var isAdmin=req.user.isAdmin; 
+//   try
+//   {    
+//     if(isAdmin == true)//
+//     {
+//           Token.aggregate([
+//             {
+//                   $lookup:
+//                         {
+//                           from:'reminders',
+//                           localField:'_id',
+//                           foreignField:'_id',
+//                           as:'reminderlist'
+//                         }
+//             }
             
-        ],function(err, content) { 
-            res.send(content);  
+//         ],function(err, content) { 
+//             res.send(content);  
            
                  
-          });
-   }
-   else
-   {
-    var userId= req.user._id;   
-              Token.aggregate([
-                {
-                      $lookup:
-                            {
-                              from:'reminders',
-                              localField:'_id',
-                              foreignField:'_id',
-                              as:'reminderlist'
-                            }
-                },
-                {                
-                  $match:{userid:userId.toString()}     
-                }  
+//           });
+//    }
+//    else
+//    {
+//     var userId= req.user._id;   
+//               Token.aggregate([
+//                 {
+//                       $lookup:
+//                             {
+//                               from:'reminders',
+//                               localField:'_id',
+//                               foreignField:'_id',
+//                               as:'reminderlist'
+//                             }
+//                 },
+//                 {                
+//                   $match:{userid:userId.toString()}     
+//                 }  
                
-            ],function(err, content) { 
-                res.send(content);  
+//             ],function(err, content) { 
+//                 res.send(content);  
                                                              
-              });
-      }
-     }    
-      catch(error )
-      {    
-        req.flash('error_msg',error.toString());
-        res.redirect('error');
-      }
+//               });
+//       }
+//      }    
+//       catch(error )
+//       {    
+//         req.flash('error_msg',error.toString());
+//         res.redirect('error');
+//       }
 
-});
+// });
 
 
 router.get('/error', ensureAuthenticated, function(req, res){
@@ -314,12 +320,14 @@ router.get('/addnewmember/:id', ensureAuthenticated, function(req, res){
 //Add new member
 router.post('/newMember',function(req,res){
  var groupid=req.body.groupid;
+ var groupname=req.body.groupname;
  var username=req.body.fullname;
  var email=req.body.email;
  var mobile=req.body.mobile; 
  var password=req.body.password;
  var conditionQuery={groupid:groupid};
  var conditionQuerytotal={_id:groupid};
+ var isAdmin=false;
 
  	//validation
    req.checkBody('fullname', 'fullname value is required').notEmpty();
@@ -336,9 +344,11 @@ else
 {      
     var newMemberList = new User({      
       groupid:groupid,
+      groupname:groupname,
       username: username, 
       email:email,     
       mobile:mobile,
+      isAdmin:isAdmin,
       password:password      
     });        
      //method start for add group
@@ -396,6 +406,7 @@ router.get('/viewmemberlist/:id',function(req,res){
   var conditionQuery = {groupid:uid };  
   User.find(conditionQuery,function(err, content) {           
     res.render('memberlist', { data:content });
+    
               
   })  
   
@@ -452,22 +463,51 @@ router.get('/reminder',ensureAuthenticated,function(req,res){
 router.get('/createList', ensureAuthenticated, function(req, res){
   res.render('createList');
 });
-
-router.get('/listItem', ensureAuthenticated, function(req, res){
-  Productlist.find(function(err,content){
-    
+router.get('/myitems', ensureAuthenticated, function(req, res){
+  var userid=req.user._id;
+  conditionQueryid={userid:userid}
+  Productlist.find(conditionQueryid,function(err,content){    
     res.render('listItem', {data:content });
-
+    // console.log(content);
   })
+});
+//Calaculate totla
+router.get('/listItem', ensureAuthenticated, function(req, res){
+  var userid=req.user._id;
+  var groupid=req.user.groupid;
+  //var total;
+  //all product item sum
+  Productlist.aggregate([    
+    { $match: { groupid:groupid } },
+    {
+        $group:{_id:'null',total:{$sum: "$productprice"},count:{$sum:1}}
+    }
+  ],function(err,totalamount){    //parseFloat(yourString).round(2)
+    var totalListAmount=totalamount[0].total;
+    var Avgbalance=totalamount[0].total/totalamount[0].count;
+    User.updateToken({_id:userid},{balance:totalListAmount,avgbalance:Avgbalance},function(err,res){
+      if (err) throw err;
+      console.log("Total  updated");
+    })
+    console.log("Total Amount",totalListAmount);
+    console.log("Avergae Balance",Avgbalance);
+  });
+  conditionQueryGroupid={groupid:groupid}
+  Productlist.find(conditionQueryGroupid,function(err,content){     
+    res.render('listItem', {data:content });       
+  });
+  
 });
 
 
 //Create List
 router.post('/createList', function (req, res) {  
   var userid= req.user._id;
+  var groupid=req.user.groupid; 
   var username=req.user.username;
   var productname=req.body.listname;
-  var productprice=req.body.listprice;   
+  var productprice=req.body.listprice; 
+  
 	//validation
 	req.checkBody('listname', 'list name value is required').notEmpty();
 	req.checkBody('listprice', 'list price is required').notEmpty();
@@ -483,7 +523,8 @@ router.post('/createList', function (req, res) {
         userid: userid, 
         username: username,
         productname: productname,
-        productprice: productprice,        
+        productprice: productprice,
+        groupid:groupid        
         
       });        
        //method start for add reminder
@@ -492,8 +533,10 @@ router.post('/createList', function (req, res) {
         Productlist.createList(newList, function(err, listToken){
                 if(err) throw err; 
                 console.log("Add Recored")           
-              });  
+              }); 
+                        
               res.redirect('/listItem');
+           
          }
       catch(error)
       {
@@ -508,9 +551,14 @@ router.post('/createList', function (req, res) {
 
 /* Edit item List Update */
 router.post('/editlist', function (req, res) {  
+  var userid= req.user._id;
+  var balance=req.user.balance;
   var id=req.body.id.toString(); 
   var productname=req.body.listname;
-  var productprice=req.body.listprice; 
+  var productprice=req.body.listprice;
+  var Leftbalance=balance-productprice;  
+  var moneycondition={_id:userid};   
+  newValuesbalance = { $set: {balance:Leftbalance}};  
   var  conditionQuerys = {_id:id};  
   try
   {
@@ -520,6 +568,12 @@ router.post('/editlist', function (req, res) {
           if (err) throw err;
           console.log("listItem  updated");
       });
+      //Update balance
+      User.updateToken(moneycondition, newValuesbalance, function(err, res)
+      {
+          if (err) throw err;
+          console.log("left balance");
+      });  
     res.redirect('/listItem'); 
 
   }
@@ -566,7 +620,7 @@ router.get('/deleteitmlst/:id', function(req, res) {
           if (err) throw err;
          // Swal("Hello world!");
           console.log("1 document delete");    
-          console.log(_id);  
+        
         });
         res.redirect('/listItem');  
       }
@@ -577,11 +631,28 @@ router.get('/deleteitmlst/:id', function(req, res) {
       }
 
 });
-//********************Ens**************************************************************** */
+//********************Ens****************************************************************/
+///***************Bind Memberlist using groupid*********************///
+router.get('/member',(req,res) =>{
+ 
+})
 
-
-//profile
+//profile information
 router.get('/profile',function(req,res){
   res.render('profile');
+});
+//Update profile
+router.post('/updateprofile',(req,res) =>{
+  var userid=req.body.id;
+  var username=req.body.username;
+  var email=req.body.email;
+  var mobile=req.body.mobile;
+  conditionQueryProfileId={_id:userid}
+  newProfileVolue={$set:{username:username,email:email,mobile:mobile}}
+  User.updateToken(conditionQueryProfileId,newProfileVolue,(err,res)=>{
+    if (err) throw err;
+    console.log("updated profile");
+  })
+  res.redirect('/profile');
 });
 module.exports = router;

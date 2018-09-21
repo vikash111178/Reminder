@@ -33,12 +33,15 @@
                 <td>{{productname}}</td>
                 <td>{{productprice}}</td>
               <td id="col2">  
-                  <a  href='/editlist/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" style="display:none"></i></a><n/> <a  href=/deleteitmlst/{{_id}}><i class="fa fa-trash fa-2x" aria-hidden="true" style="display:none"></i></a>
-                </td>
+                  <a  href='/editlist/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" style="display:none"></i></a><n/> <a  href='/deleteitmlst/{{_id}}'><i class="fa fa-trash fa-2x" aria-hidden="true" style="display:none"></i></a>
+               
             </tr>
+           
             {{/each}}
+           <tr><td></td><td style="color:red;font-size:100%;">Total</td><td style="color:red;font-size:100%;"> {{user.balance}}</td></tr>
         </tbody> 
     </table>
+    
    </div> 
 </body>
 

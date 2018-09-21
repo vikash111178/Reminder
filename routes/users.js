@@ -27,16 +27,22 @@ router.get('/login', function (req, res) {
 	if(!req.isAuthenticated())
 		res.render('login');
 	else
+	
 		res.redirect('/');
+	
 });
 
 // Register User
 router.post('/register', function (req, res) {	
 	var username=req.body.username;
+			balance=0.01;
+			avgbalance=0.00;
 		email=req.body.email;
 		mobile=req.body.mobile;
 		password=req.body.password;
 		password2= req.body.password2;
+		isAdmin=true;
+	
 	//validation
 	req.checkBody('username', 'Username is required').notEmpty();	
 	req.checkBody('password', 'Password is required').notEmpty();
@@ -56,6 +62,9 @@ router.post('/register', function (req, res) {
 				username: username,
 				mobile:mobile,
 				password: password,
+				balance:balance,
+				avgbalance:avgbalance,
+				isAdmin:isAdmin,
 				secretToken:secretToken 
 		});								
 		User.FindToUsername({$or:[{username:username},{email:email}]},function(err,tokencodes){
@@ -128,13 +137,14 @@ passport.serializeUser(function(user, done)
   });
 
 //Login User
-router.post('/login',
-	passport.authenticate('local',{successRedirect: '/', failureRedirect: '/users/login', failureFlash: true}),
-	function(req, res)
-	{	
-		res.redirect('/');
-    }
-);
+ router.post('/login',passport.authenticate('local',{successRedirect: '/', failureRedirect: '/users/login', failureFlash: true}),
+  	function(req, res)
+			  {	
+					
+						res.redirect('/');
+				
+				}
+  )  ;
 router.get('/logout', function(req, res){
 	req.logOut();
 
