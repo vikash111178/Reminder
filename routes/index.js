@@ -474,24 +474,25 @@ router.get('/myitems', ensureAuthenticated, function(req, res){
 //Calaculate totla
 router.get('/listItem', ensureAuthenticated, function(req, res){
   var userid=req.user._id;
-  var groupid=req.user.groupid;
-  //var total;
-  //all product item sum
-  Productlist.aggregate([    
-    { $match: { groupid:groupid } },
-    {
-        $group:{_id:'null',total:{$sum: "$productprice"},count:{$sum:1}}
-    }
-  ],function(err,totalamount){    //parseFloat(yourString).round(2)
-    var totalListAmount=totalamount[0].total;
-    var Avgbalance=totalamount[0].total/totalamount[0].count;
-    User.updateToken({_id:userid},{balance:totalListAmount,avgbalance:Avgbalance},function(err,res){
-      if (err) throw err;
-      console.log("Total  updated");
-    })
-    console.log("Total Amount",totalListAmount);
-    console.log("Avergae Balance",Avgbalance);
-  });
+  var groupid=req.user.groupid; 
+  // //all product item sum
+  // Productlist.aggregate([    
+  //   { $match: { groupid:groupid } },
+  //   {
+  //       $group:{_id:'null',productprice:{$sum: "$productprice"},count:{$sum:1}}
+  //   }
+  // ],function(err,totalamount){    
+  //   if (err) return handleError(err);
+  //   var totalListAmount=totalamount[0].productprice;
+  //   var Avgbalance=totalamount[0].productprice/totalamount[0].count;
+  //   User.updateToken({_id:userid},{balance:totalListAmount,avgbalance:Avgbalance},function(err,res){
+     
+  //     console.log("Total  updated");
+  //   })
+  //   console.log("Total Amount",totalListAmount);
+  //   console.log("Avergae Balance",Avgbalance);
+  // });
+  //***********End */
   conditionQueryGroupid={groupid:groupid}
   Productlist.find(conditionQueryGroupid,function(err,content){     
     res.render('listItem', {data:content });       
@@ -533,19 +534,39 @@ router.post('/createList', function (req, res) {
         Productlist.createList(newList, function(err, listToken){
                 if(err) throw err; 
                 console.log("Add Recored")           
-              }); 
-                        
-              res.redirect('/listItem');
+              });  
+              var userid=req.user._id;
+              var groupid=req.user.groupid; 
+              var productprice;
+              //all product item sum
+              Productlist.aggregate([    
+                { $match: { groupid:groupid } },
+                {
+                    $group:{_id:'null',productprice:{$sum: "$productprice"},count:{$sum:1}}
+                }
+              ],function(err,totalamount){    
+                if (err) return handleError(err);
+                var totalListAmount=parseFloat(totalamount[0].productprice) + parseFloat(productprice);
+                var totalcount=parseFloat(totalamount[0].count)+1;
+                var Avgbalance=totalListAmount/totalcount; 
+                User.updateToken({_id:userid},{balance:totalListAmount,avgbalance:Avgbalance},function(err,res){
+                
+                  console.log("Total  updated");
+                })
+                console.log("Total Amount",totalListAmount);
+                console.log("Avergae Balance",Avgbalance);
+                console.log("totalcount",totalcount);
+              });
+              //***********End */                       
+          res.redirect('/listItem');
            
          }
       catch(error)
       {
         req.flash('error_msg',error.toString());
         res.redirect('error');
+      }   
       }
-    
-    
-  }
 
 }); 
 
