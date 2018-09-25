@@ -11,9 +11,9 @@
           <div class="container-fluid">
             <div class="row">
               <!-- Basic Form-->
-              <div class="col-lg-6">
+              <div class="col-lg-5">
                 <div class="block">
-                  <div class="title"><strong class="d-block">Member profile</strong><span class="d-block"></span></div>
+                  <div class="title"><strong class="d-block">Member profile <a href="" style="margin-left:55%" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil-square-o fa-1x" aria-hidden="true" ></i></a></strong><span class="d-block"></span> </div>
                   <div class="block-body">
                     <div > Name: {{user.username}}</div>
                     <hr>
@@ -30,7 +30,7 @@
                   <div class="title"><strong></strong></div>
                   <div class="block-body text-center">
                        {{!-- <a  href='#' class="btn btn-primary" data-toggle="modal" data-target="#myModal"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" style="display:none"></i>Edit</a> --}}
-                    <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ></i></button>
+                    {{!-- <button type="button" data-toggle="modal" data-target="#myModal" class="btn btn-primary"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" ></i></button> --}}
                     <!-- Modal-->
                     <div id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" class="modal fade text-left">
                       <div role="document" class="modal-dialog">
