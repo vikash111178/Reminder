@@ -72,6 +72,10 @@ app.use(expressValidator({
 
 // Connect Flash
 app.use(flash());
+app.use((req, res, next) => {
+  res.locals.messages = require('express-messages')(req, res);
+  next();
+});
 
 //Route
 app.use('/', routes);
@@ -86,7 +90,7 @@ app.use(function (req, res, next) {
  
   next();
 });
-
+ 
 
 // Set Port
 app.set('port', (process.env.PORT || 8080));

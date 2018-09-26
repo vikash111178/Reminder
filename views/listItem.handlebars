@@ -17,7 +17,7 @@
                             <td id="row">{{user.username}}</td>                
                         </tr>
                         <tr style="text-align:center;" >                            
-                            <th style="display:none;">User Name</th>
+                            <th>User Name</th>
                             <th>Item Name</th>
                             <th>Item Price</th>                
                             <th>Action</th>
@@ -26,7 +26,7 @@
                     <tbody  style="text-align:center;">
                         {{#each data}}
                             <tr>                
-                                <td id="col" style="display:none;">{{username}}</td>
+                                <td id="col" >{{username}}</td>
                                 <td>{{productname}}</td>
                                 <td>{{productprice}}</td>
                                 <td id="col2">  
@@ -34,7 +34,7 @@
                             </tr>
                     
                         {{/each}}
-                           <tr><td style="display:none;"></td><td style="color:red;font-size:100%;">Total</td><td style="color:red;font-size:100%;"> {{user.balance}}</td></tr>
+                           <tr><td ></td><td style="color:red;font-size:100%;">Total</td><td style="color:red;font-size:100%;"> {{user.balance}}</td></tr>
                     </tbody> 
             </table>
             
