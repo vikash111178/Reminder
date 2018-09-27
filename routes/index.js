@@ -410,6 +410,30 @@ router.get('/deletegroup/:id', function(req, res) {
       }
 
 });
+//Get self Item in admin viewdetails by admin
+router.get('/memberproductview/:id',(req,res)=>{
+  var db = req.db; 
+  var uid=req.params.id;
+  Productlist.aggregate([    
+    {     
+      $match: { userid:uid.toString() }
+    },
+    {
+      $group:{_id:'null',totalprice:{$sum: "$productprice"}}
+    }
+  ],function(err,getbyadminselftotalamount){   
+       if (err) throw (err);     
+      Productlist.find({userid:uid},(err,memberlist)=>{
+        var Totalselfamt=getbyadminselftotalamount;
+        var totalmerage=memberlist.concat(Totalselfamt);       
+        res.render('memberproductview',{data:totalmerage});
+     });
+     })
+   
+ 
+});
+ 
+
 
 //View Memberlist details
 router.get('/viewmemberlist/:id',function(req,res){
@@ -503,7 +527,7 @@ router.get('/myitems', ensureAuthenticated, function(req, res){
 router.get('/listItem', ensureAuthenticated, function(req, res){
       var userid=req.user._id;
       var groupid=req.user.groupid;             
-      //all product item sum
+      //All product item sum
       Productlist.aggregate([    
         { 
            $match: { groupid:groupid } 
@@ -513,21 +537,19 @@ router.get('/listItem', ensureAuthenticated, function(req, res){
         }
       ],function(err,totalamount){    
               if (err) return handleError(err);              
-              Group.find({_id:groupid},function(err, content) { //find total member in singel group
-                var total=parseFloat(content[0].total);          
-                var totalListAmount=totalamount[0].productprice;
-                var avgbalance=totalamount[0].productprice/total; 
-                Avgbalance=avgbalance.toFixed(2);
-                User.updateToken({_id:userid},{balance:totalListAmount,avgbalance:Avgbalance},function(err,res){
-                  console.log("Total  updated");
-                })
-                console.log("Total",total);
-                console.log("Total Amount",totalListAmount);
-                console.log("Avergae Balance",Avgbalance);
+              Group.find({_id:groupid},function(err, content) { //Find the total number of member in singel group
+                    var total=parseFloat(content[0].total); //Get total member         
+                    var totalListAmount=totalamount[0].productprice;//Get total amount
+                    var avgbalance=totalamount[0].productprice/total; //Get average amount
+                    Avgbalance=avgbalance.toFixed(2);
+                    User.updateToken({_id:userid},{balance:totalListAmount,avgbalance:Avgbalance},function(err,res){
+                      console.log("Total  updated");
+                    })               
                }) ;
              
       });
     // ***********End */
+    //Bind all product list
       conditionQueryGroupid={groupid:groupid}
       Productlist.find(conditionQueryGroupid,function(err,content){     
         res.render('listItem', {data:content });       

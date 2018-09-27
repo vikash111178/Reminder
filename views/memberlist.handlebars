@@ -22,7 +22,7 @@
         <tbody  style="text-align:center;">
               {{#each data}}      
             <tr>
-                <td><i class="fa fa-user" aria-hidden="true"></i>  {{username}}</a></td>               
+                <td><a href='/memberproductview/{{_id}}' style="color:royalblue"><i class="fa fa-user" aria-hidden="true"></i>  {{username}}</a></td>               
                 <td>{{email}}</td>
                 <td>{{mobile}}</td>
                 {{!-- <td><a  href='/deletemember/{{_id}}' class="confirmation"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td> --}}
@@ -31,7 +31,7 @@
         </tbody> 
     </table>
    </div> 
-
+  
    <script>
         //Search token details base on pair/token
         function myFunction() 

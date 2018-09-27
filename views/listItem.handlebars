@@ -1,4 +1,4 @@
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+{{!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script> --}}
   
   <div class="right-box" > 
       <span class="search-box-div">   
@@ -11,7 +11,7 @@
                
                <body onload="datarow()">
     <div class="table-responsive"   > 
-            <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;"  >       
+            <table class="table table-striped table-sm" id="ListTable" style="width:100% !important;">       
                     <thead>
                         <tr style="display:none" >
                             <td id="row">{{user.username}}</td>                
@@ -49,7 +49,7 @@
             var input, filter, table, tr, td, i;
             input = document.getElementById("myInput");
             filter = input.value.toUpperCase();
-            table = document.getElementById("sampleTable");
+            table = document.getElementById("ListTable");
             tr = table.getElementsByTagName("tr");
             for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[1];
@@ -80,7 +80,7 @@ function datarow()
 {
     
     var tr,table,i,j,ii,jj,celles,storevalues,values;
-     table = document.getElementById("sampleTable");
+     table = document.getElementById("ListTable");
      tr = table.getElementsByTagName("tr");
     for(i=0; i<=0; i++)
     {

@@ -10,8 +10,8 @@
                </span>
                
                <body onload="datarow()">
-    <div class="table-responsive"   > 
-            <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;"  >       
+           <div class="table-responsive"   > 
+            <table class="table table-striped table-sm" id="myListTable" style="width:100% !important;"  >       
                     <thead>
                         <tr style="display:none" >
                             <td id="row">{{user.username}}</td>                
@@ -30,7 +30,7 @@
                                 <td>{{productname}}</td>
                                 <td>{{productprice}}</td>
                                 <td id="col2">  
-                                <a  href='/editlist/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" style="display:none"></i></a><n/> <a  href='/deleteitmlst/{{_id}}'><i class="fa fa-trash fa-2x" aria-hidden="true" style="display:none"></i></a>               
+                                <a  href='/editlist/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" style="display:none;text-decoration: none;"></i></a><n/> <a  href='/deleteitmlst/{{_id}}'><i class="fa fa-trash fa-2x" aria-hidden="true" style="display:none;text-decoration: none;"></i></a>               
                             </tr>
                     
                         {{/each}}
@@ -49,7 +49,7 @@
             var input, filter, table, tr, td, i;
             input = document.getElementById("myInput");
             filter = input.value.toUpperCase();
-            table = document.getElementById("sampleTable");
+            table = document.getElementById("myListTable");
             tr = table.getElementsByTagName("tr");
             for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[1];
@@ -80,7 +80,7 @@ function datarow()
 {
     
     var tr,table,i,j,ii,jj,celles,storevalues,values;
-     table = document.getElementById("sampleTable");
+     table = document.getElementById("myListTable");
      tr = table.getElementsByTagName("tr");
     for(i=0; i<=0; i++)
     {
@@ -89,7 +89,7 @@ function datarow()
         {
             if(celles[j].id=="row")
             {
-            storevalues=celles[0].innerText;
+            storevalues=celles[0].innerText;         
             } 
 
         }
