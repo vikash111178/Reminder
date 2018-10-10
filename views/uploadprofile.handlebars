@@ -1,0 +1,37 @@
+<br/>
+<div>
+<form action="/updateprofile/upload" method="POST" enctype="multipart/form-data" runat="server">
+ <div class="container-fluid">
+     <div>    <img id="imgprivew" src="../images/preview.png" width="150px" height="150px" alt="your image" /></div><br/>
+     <div class="row">
+         <div class="col-lg-2">
+                <input type="file" name="photo"  id="imgInp"></input>
+         </div>        
+     </div>
+     <br>
+     <div class="row">
+           <div class="col-lg-2">
+           <input type="submit" name="submit" class="btn btn-primary"></input>
+         </div>
+     </div>
+ </div>
+ {{!-- <div class ="col s3"><img src='../{{photolist.path}}' alt="image" class="responsive-img" /></div>  --}}
+</form>
+</div>
+<script src="/admin/vendor/jquery/jquery.min.js"></script>
+<script>
+      function readURL(input) {
+            if (input.files && input.files[0]) {
+            var reader = new FileReader();            
+            reader.onload = function (e) {
+                $('#imgprivew').attr('src', e.target.result);
+            }            
+            reader.readAsDataURL(input.files[0]);
+        }
+    }    
+    $("#imgInp").change(function(){
+        readURL(this);
+    });
+
+</script>
+

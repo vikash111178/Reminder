@@ -30,6 +30,7 @@
     "mongoose": "*",
     "mongoose-double": "0.0.1",
     "mongoose-unique-validator": "^2.0.1",
+    "multer": "^1.4.0",
     "node-cron": "^1.2.1",
     "nodemailer": "^4.6.8",
     "nodemon": "^1.18.4",

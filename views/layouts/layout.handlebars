@@ -82,7 +82,7 @@
       <nav id="sidebar" >
         <!-- Sidebar Header--> 
          <div class="sidebar-header d-flex align-items-center">
-          {{!-- <div class="avatar"><img src="/admin/img/avatar-1.jpg" alt="..." class="img-fluid rounded-circle"></div> --}}
+          <div class="avatar"><img src='../{{user.path}}' alt="..." class="img-fluid rounded-circle"></div>
           <div class="title">
             <h1 class="h4">{{user.username}}</h1>
             {{!-- <p>Admin</p> --}}
@@ -105,7 +105,7 @@
                   
                    <li class="active"><a href="/profile"> <i class="fa fa fa-user"></i>Profile </a></li>
                  {{else}}
-                  
+                   <li class="active"><a href="/"> <i class="fa fa-group" aria-hidden="true"></i>Members </a></li>
                <li class="active"><a href="#exampledropdownDropdown" aria-expanded="false" data-toggle="collapse"> <i class="icon-windows"></i>List Items </a>
                  <ul id="exampledropdownDropdown" class="collapse list-unstyled ">
                      <li><a href="/myitems"><i class="fa fa-list-alt" aria-hidden="true"></i>My Items</a></li>
@@ -113,12 +113,12 @@
                                    
                  </ul>
                </li>
-                <li class="active"><a href="/"> <i class="fa fa-group" aria-hidden="true"></i>Members </a></li>
+               
                <li>
                 {{!-- <li class="active"><a href="/listItem"> <i class="fa fa-list-alt" aria-hidden="true"></i>List Item </a></li> --}}
                 
                 <li class="active"><a href="/profile"> <i class="fa fa fa-user"></i>Profile </a></li>
-                                  
+                                 
        {{/if}}
         </ul>    
        

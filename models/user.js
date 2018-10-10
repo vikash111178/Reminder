@@ -21,8 +21,8 @@ var UserSchema = mongoose.Schema({
     isAdmin:{type:Boolean},  
     groupname:{type:String},  
     resetPasswordToken:{type:String} ,
-    resetPasswordExpires: Date
-  
+    resetPasswordExpires: Date,
+    path:  { type: String } 
    
 });
 
@@ -79,3 +79,6 @@ module.exports.findMemberList=function(conditionQuery,callback){
     MemberList.deleteOne(conditionDeleteQuery,callback)
  }
  
+ module.exports.updateImage = function(conditionQuery, newValues, callback){
+    User.updateOne(conditionQuery, newValues, callback);
+ }

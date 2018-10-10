@@ -31,7 +31,8 @@ router.get('/', ensureAuthenticated, function(req, res){
     User.find(conditionQuery,function(err, content) {           
      res.render('index', { data:content });
                
-   });  
+   }); 
+    
   //res.render('index');
 });
 /**Get details using api */
@@ -319,81 +320,81 @@ router.get('/addnewmember/:id', ensureAuthenticated, function(req, res){
 });
 //Add new member
 router.post('/newMember',function(req,res,next){
- var groupid=req.body.groupid; 
- var groupname=req.body.groupname;
- var username=req.body.fullname;
- var email=req.body.email;
- var mobile=req.body.mobile; 
- var password=req.body.password;
- var conditionQuery={groupid:groupid};
- var conditionQuerytotal={_id:groupid};
- var isAdmin=false;
+      var groupid=req.body.groupid; 
+      var groupname=req.body.groupname;
+      var username=req.body.fullname;
+      var email=req.body.email;
+      var mobile=req.body.mobile; 
+      var password=req.body.password;
+      var conditionQuery={groupid:groupid};
+      var conditionQuerytotal={_id:groupid};
+      var isAdmin=false;
 
- 	//validation
-   req.checkBody('fullname', 'fullname value is required').notEmpty();
-   req.checkBody('email', 'email value is required').notEmpty();
-   req.checkBody('mobile', 'mobile value is required').notEmpty();
-   req.checkBody('password', 'password value is required').notEmpty();
-   var errors=req.validationErrors();
- if(errors){   
-  res.render('addnewmember', {
-    errors:errors
-  });
-}
-else
-{      
-    var newMemberList = new User({      
-      groupid:groupid,
-      groupname:groupname,
-      username: username, 
-      email:email,     
-      mobile:mobile,
-      isAdmin:isAdmin,
-      password:password      
-    });   
-    User.FindToUsername({$and:[{email:email},{groupid:groupid}]},function(err,tokencodes){
-			if(err) throw err
-			if(tokencodes.length > 0 )
-			{				
-        req.flash('error_msg','The username/email already registered.');
-        //console.log('The username/email already registered.')
-				res.redirect('addnewmember');
-			}
-			else
-			{
-        try
-        {             
-         User.createUser(newMemberList, function(err, newMemberList){
-                 if(err) throw err; 
-                 console.log("Add group")                         
-               });           
-             res.redirect('Viewgroup');  
-             //Count total member   
-             User.count(conditionQuery,function(err,total){ 
-             var totalmemberlist=total+1;//total member 
-             //update total member in group document         
-             newValues={ $set: {total:totalmemberlist}}; 
-             Group.updateTotal(conditionQuerytotal,newValues,function(err,res){
-               if (err) throw err;
-               console.log("Total  updated");
-             })
-           }); 
-          }
-       catch(error)
-       {
-         req.flash('error_msg',error.toString());
-         res.redirect('error');
-       } 
+        //validation
+        req.checkBody('fullname', 'fullname value is required').notEmpty();
+        req.checkBody('email', 'email value is required').notEmpty();
+        req.checkBody('mobile', 'mobile value is required').notEmpty();
+        req.checkBody('password', 'password value is required').notEmpty();
+        var errors=req.validationErrors();
+      if(errors){   
+        res.render('addnewmember', {
+          errors:errors
+        });
       }
-      })     
-     
-}
+      else
+      {      
+              var newMemberList = new User({      
+                groupid:groupid,
+                groupname:groupname,
+                username: username, 
+                email:email,     
+                mobile:mobile,
+                isAdmin:isAdmin,
+                password:password      
+              });   
+              User.FindToUsername({$and:[{email:email},{groupid:groupid}]},function(err,tokencodes){
+                    if(err) throw err
+                    if(tokencodes.length > 0 )
+                    {				
+                      req.flash('error_msg','The username/email already registered.');
+                      //console.log('The username/email already registered.')
+                      res.redirect('addnewmember');
+                    }
+                    else
+                    {
+                          try
+                          {             
+                              User.createUser(newMemberList, function(err, newMemberList){
+                                      if(err) throw err; 
+                                      console.log("Add group")                         
+                                    });           
+                                  res.redirect('Viewgroup');  
+                                  //Count total member   
+                                  User.count(conditionQuery,function(err,total){ 
+                                  var totalmemberlist=total+1;//total member 
+                                  //update total member in group document         
+                                  newValues={ $set: {total:totalmemberlist}}; 
+                                  Group.updateTotal(conditionQuerytotal,newValues,function(err,res){
+                                    if (err) throw err;
+                                    console.log("Total  updated");
+                                  })
+                                }); 
+                            }
+                                catch(error)
+                                {
+                                  req.flash('error_msg',error.toString());
+                                  res.redirect('error');
+                                } 
+                      }
+                })     
+          
+         }
 
 });
 //Delete Grouplist
 router.get('/deletegroup/:id', function(req, res) { 
-  var db = req.db; 
-  var uid = req.params.id.toString();    
+    var db = req.db; 
+    var uid = req.params.id.toString();    
     var conditionQuery = {_id:uid };
       try
       {
@@ -412,28 +413,26 @@ router.get('/deletegroup/:id', function(req, res) {
 });
 //Get self Item in admin viewdetails by admin
 router.get('/memberproductview/:id',(req,res)=>{
-  var db = req.db; 
-  var uid=req.params.id;
-  Productlist.aggregate([    
-    {     
-      $match: { userid:uid.toString() }
-    },
-    {
-      $group:{_id:'null',totalprice:{$sum: "$productprice"}}
-    }
-  ],function(err,getbyadminselftotalamount){   
-       if (err) throw (err);     
-      Productlist.find({userid:uid},(err,memberlist)=>{
-        var Totalselfamt=getbyadminselftotalamount;
-        var totalmerage=memberlist.concat(Totalselfamt);       
-        res.render('memberproductview',{data:totalmerage});
-     });
-     })
-   
+    var db = req.db; 
+    var uid=req.params.id;
+    Productlist.aggregate([    
+      {     
+        $match: { userid:uid.toString() }
+      },
+      {
+        $group:{_id:'null',totalprice:{$sum: "$productprice"}}
+      }
+    ],function(err,getbyadminselftotalamount){   
+        if (err) throw (err);     
+        Productlist.find({userid:uid},(err,memberlist)=>{
+          var Totalselfamt=getbyadminselftotalamount;
+          var totalmerage=memberlist.concat(Totalselfamt);       
+          res.render('memberproductview',{data:totalmerage});
+      });
+      })
+    
  
 });
- 
-
 
 //View Memberlist details
 router.get('/viewmemberlist/:id',function(req,res){
@@ -441,39 +440,37 @@ router.get('/viewmemberlist/:id',function(req,res){
   var  uid = req.params.id; 
   var conditionQuery = {groupid:uid };  
   User.find(conditionQuery,function(err, content) {           
-    res.render('memberlist', { data:content });
-    
+    res.render('memberlist', { data:content });  
               
   })  
   
 });
 //delete memberlist
 router.get('/deletemember/:id', function(req, res) { 
-  var db = req.db; 
-  var uid = req.params.id.toString();    
-    var conditionQuery = {_id:uid };
-    
+      var db = req.db; 
+      var uid = req.params.id.toString();    
+      var conditionQuery = {_id:uid };    
       try
       {
-        MemberList.deleteMemberList(conditionQuery, function(err, res) {
-          if (err) throw err;
-          console.log("1 Member delete");    
-        });
-        res.redirect('/Viewgroup');
-        // MemberList.find(conditionQuery,function(err,groupid){
-        //   var conditionGroupid=groupid[0].groupid
-        //   console.log(conditionGroupid)
-        //   var conditionQuerytotal={_id:conditionGroupid};
-        //   MemberList.count(conditionQuery,function(err,total){ 
-        //     var totalmemberlist=total+1;//total member 
-        //     //update total member in group document         
-        //     newValues={ $set: {total:totalmemberlist}}; 
-        //     Group.updateTotal(conditionQuerytotal,newValues,function(err,res){
-        //       if (err) throw err;
-        //       console.log("Total  updated");
-        //     })
-        //   });  
-        // });
+            MemberList.deleteMemberList(conditionQuery, function(err, res) {
+              if (err) throw err;
+              console.log("1 Member delete");    
+            });
+            res.redirect('/Viewgroup');
+            // MemberList.find(conditionQuery,function(err,groupid){
+            //   var conditionGroupid=groupid[0].groupid
+            //   console.log(conditionGroupid)
+            //   var conditionQuerytotal={_id:conditionGroupid};
+            //   MemberList.count(conditionQuery,function(err,total){ 
+            //     var totalmemberlist=total+1;//total member 
+            //     //update total member in group document         
+            //     newValues={ $set: {total:totalmemberlist}}; 
+            //     Group.updateTotal(conditionQuerytotal,newValues,function(err,res){
+            //       if (err) throw err;
+            //       console.log("Total  updated");
+            //     })
+            //   });  
+            // });
          
       }
       catch(error)
@@ -485,12 +482,12 @@ router.get('/deletemember/:id', function(req, res) {
 });
 //get reminder details by user id
 router.get('/reminder',ensureAuthenticated,function(req,res){
- var userid=req.user._id;
- var conditionQuery={userid:userid};
- Token.find(conditionQuery,function(err,content){
-   res.render('reminder',{data:content});
-   console.log(content);
- })
+    var userid=req.user._id;
+    var conditionQuery={userid:userid};
+    Token.find(conditionQuery,function(err,content){
+      res.render('reminder',{data:content});
+      console.log(content);
+    })
  
 });
 
@@ -558,14 +555,13 @@ router.get('/listItem', ensureAuthenticated, function(req, res){
 });
 
 
-//Create Item List
+//Add New Itemlist
 router.post('/createList', function (req, res) {  
   var userid= req.user._id;
   var groupid=req.user.groupid; 
   var username=req.user.username;
   var productname=req.body.listname;
-  var productprice=req.body.listprice; 
-  
+  var productprice=req.body.listprice;   
 	//validation
 	req.checkBody('listname', 'list name value is required').notEmpty();
 	req.checkBody('listprice', 'list price is required').notEmpty();
@@ -588,50 +584,49 @@ router.post('/createList', function (req, res) {
        //method start for add reminder
        try
        {             
-        Productlist.createList(newList, function(err, listToken){
-                if(err) throw err; 
-                console.log("Add Recored")           
-              });  
-              var userid=req.user._id;
-              var groupid=req.user.groupid;              
-              //all product item sum
-              Productlist.aggregate([    
-                { $match: { groupid:groupid } },
-                {
-                    $group:{_id:'null',productprice:{$sum: "$productprice"},count:{$sum:1}}
-                }
-              ],function(err,totalamount){    
-                if(err) throw err; 
-                var totalListAmount=parseFloat(totalamount[0].productprice) + parseFloat(productprice);
-                var totalcount=parseFloat(totalamount[0].count)+1;
-                var Avgbalance=totalListAmount/totalcount; 
-                User.updateToken({_id:userid},{balance:totalListAmount,avgbalance:Avgbalance},function(err,res){
-                
-                  console.log("Total  updated");
-                })
-                console.log("Total Amount",totalListAmount);
-                console.log("Avergae Balance",Avgbalance);
-                console.log("totalcount",totalcount);
-              });
-              //***********End */ 
-               //Update self member product price
-              Productlist.aggregate([    
-                {     
-                  $match: { userid:userid.toString() }
-                },
-                {
-                  $group:{_id:'null',productprice:{$sum: "$productprice"}}
-                }
-              ],function(err,totalamount){   
-                if (err) throw (err); 
-                User.updateToken({_id:userid},{selfSpand:totalamount[0].productprice + parseFloat(productprice)},function(err,res){     
-                  console.log("Total  updated");
-                })
-                console.log("Total Amount",totalamount[0]);
-              
-              });                      
-          res.redirect('/listItem');
-           
+            Productlist.createList(newList, function(err, listToken){
+                    if(err) throw err; 
+                    console.log("Add Recored")           
+                  });  
+                  var userid=req.user._id;
+                  var groupid=req.user.groupid;              
+                  //all product item sum
+                  Productlist.aggregate([    
+                    { $match: { groupid:groupid } },
+                    {
+                        $group:{_id:'null',productprice:{$sum: "$productprice"},count:{$sum:1}}
+                    }
+                  ],function(err,totalamount){    
+                    if(err) throw err; 
+                    var totalListAmount=parseFloat(totalamount[0].productprice) + parseFloat(productprice);
+                    var totalcount=parseFloat(totalamount[0].count)+1;
+                    var Avgbalance=totalListAmount/totalcount; 
+                    User.updateToken({_id:userid},{balance:totalListAmount,avgbalance:Avgbalance},function(err,res){                    
+                      console.log("Total  updated");
+                    })
+                    console.log("Total Amount",totalListAmount);
+                    console.log("Avergae Balance",Avgbalance);
+                    console.log("totalcount",totalcount);
+                  });
+                  //***********End */ 
+                  //Update self member product price
+                  Productlist.aggregate([    
+                    {     
+                      $match: { userid:userid.toString() }
+                    },
+                    {
+                      $group:{_id:'null',productprice:{$sum: "$productprice"}}
+                    }
+                  ],function(err,totalamount){   
+                    if (err) throw (err); 
+                    User.updateToken({_id:userid},{selfSpand:totalamount[0].productprice + parseFloat(productprice)},function(err,res){     
+                      console.log("Total  updated");
+                    })
+                    console.log("Total Amount",totalamount[0]);
+                  
+                  });                      
+                     res.redirect('/listItem');
+            
          }
       catch(error)
       {
@@ -642,7 +637,7 @@ router.post('/createList', function (req, res) {
 
 }); 
 
-/* Edit item List Update */
+/* Update itemList (edit) */
 router.post('/editlist', function (req, res) {  
   var userid= req.user._id;
   var balance=req.user.balance;
@@ -678,30 +673,29 @@ router.post('/editlist', function (req, res) {
   
 });
 
-//Find value and bind textbox for edit listitem
+//Get value and bind textbox for edit listitem
 router.get('/editlist/:id', function(req, res) 
 { 
-  var db = req.db; 
-    var  uid = req.params.id;
-      
-    var conditionQuery = {_id:uid };   
-    try
-    {
-      Productlist.find(conditionQuery,function(err, content) 
-      {      
-        res.render('editlist', {  data:content[0] });    
-      })
-    }
-    catch(error)
-    {
-      req.flash('error_msg',error.toString());
-      res.redirect('error');
-    }
+      var db = req.db; 
+      var  uid = req.params.id;      
+      var conditionQuery = {_id:uid };   
+      try
+      {
+        Productlist.find(conditionQuery,function(err, content) 
+        {      
+          res.render('editlist', {  data:content[0] });    
+        })
+      }
+      catch(error)
+      {
+        req.flash('error_msg',error.toString());
+        res.redirect('error');
+      }
 
 });
     
 
-//Delete list Item
+//Delete listItem
 router.get('/deleteitmlst/:id', function(req, res) { 
   var db = req.db; 
   var uid = req.params.id.toString();    
@@ -710,8 +704,7 @@ router.get('/deleteitmlst/:id', function(req, res) {
       {
        
         Productlist.deleteToken(conditionQuery, function(err, res) {
-          if (err) throw err;
-         // Swal("Hello world!");
+          if (err) throw err;       
           console.log("1 document delete");    
         
         });
@@ -724,35 +717,32 @@ router.get('/deleteitmlst/:id', function(req, res) {
       }
 
 });
-//********************Ens****************************************************************/
-///***************Bind Memberlist using groupid*********************///
-router.get('/member',(req,res) =>{
- 
-})
+//********************Ens******************/
 
-//profile information
+//Go to profile information
 router.get('/profile',function(req,res){
-  res.render('profile');
+    res.render('profile');
 });
-//Update profile
+
+//Update user  profile
 router.post('/updateprofile',(req,res) =>{
-  var userid=req.body.id;
-  var username=req.body.username;
-  var email=req.body.email;
-  var mobile=req.body.mobile;
-  conditionQueryProfileId={_id:userid};
-  conditionQueryProductlist={userid:userid};
-  newProductUserName={$set:{username:username}}
-  newProfileVolue={$set:{username:username,email:email,mobile:mobile}}
-  User.updateToken(conditionQueryProfileId,newProfileVolue,(err,res)=>{
-    if (err) throw err;
-    console.log("updated profile");
-  })
-  Productlist.updateMany(conditionQueryProductlist,newProductUserName,(err,res) =>{
-    if (err) throw err;
-    console.log("updated List username");
-  });
-  res.redirect('/profile');
+      var userid=req.body.id;
+      var username=req.body.username;
+      var email=req.body.email;
+      var mobile=req.body.mobile;
+      conditionQueryProfileId={_id:userid};
+      conditionQueryProductlist={userid:userid};
+      newProductUserName={$set:{username:username}}
+      newProfileVolue={$set:{username:username,email:email,mobile:mobile}}
+        User.updateToken(conditionQueryProfileId,newProfileVolue,(err,res)=>{
+          if (err) throw err;
+          console.log("updated profile");
+        })
+        Productlist.updateMany(conditionQueryProductlist,newProductUserName,(err,res) =>{
+            if (err) throw err;
+            console.log("updated List username");
+        });
+        res.redirect('/profile');
 });
 
 

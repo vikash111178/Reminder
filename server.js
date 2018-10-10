@@ -12,6 +12,7 @@ var config=require('./models/config');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var addmoney=require('./routes/balance');
+var updateprofile=require('./routes/imageupload');
 //var member=require('./routes/member');
 
 
@@ -81,6 +82,7 @@ app.use((req, res, next) => {
 app.use('/', routes);
 app.use('/users', users);
 app.use('/addmoney',addmoney);
+app.use('/updateprofile',updateprofile);
 // Global Vars
 app.use(function (req, res, next) {
   res.locals.success_msg = req.flash('success_msg');

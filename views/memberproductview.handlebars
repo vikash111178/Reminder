@@ -37,22 +37,22 @@
             <table style="margin-left:80%;">
                {{#each data}}
                             <tr>            
-                                <td style="color:red">{{totalprice}}</td>                                                          
+                                <td style="color:red;font-size: 15px;">{{totalprice}}</td>                                                          
                             </tr>
                         {{/each}}
             </table>
             
    </div> 
-   {{!-- <style>
-    table tr td:last-child {                            
-                            background-color: red;
-                            padding: 5px;
+   <style>
+    table tr td:last {                            
+                           
+                           
                            font-weight: bold;
                             
                          }
 
     
-   </style> --}}
+   </style>
    <script>
       $("table tr td:last" ).before( "<span> Total- </span>" );
 </script>
