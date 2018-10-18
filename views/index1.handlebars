@@ -51,7 +51,7 @@ $(document).ready(function(){
                                                         {data:"mobile"},
                                                         {
                                                         mRender: function (data, type, row) {
-                                                            return '<a href=/edit/'+row._id+'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a>  <a href=/delete/'+row._id+' ><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>'
+                                                            return '<a href=/edit/'+row._id+'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a>  <a href=/delete/'+row._id+' onclick="return Remove();"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>'
                                                         }
                         }                                                                            
                                                     ]

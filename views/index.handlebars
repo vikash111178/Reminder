@@ -1,4 +1,4 @@
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
   <div class="right-box">
       <span class="search-box-div">   
                <strong>Search:</strong> 
@@ -8,31 +8,51 @@
                     {{!-- <a class="btn btn-secondar" href="/addnewmember/{{datagroup._id}}" ><i class="fa fa-group" style="color:rgb(236, 149, 149)"></i>Add Member</a> --}}
                 
                </span>
-               </div>
+ </div>
   <div class="table-responsive"> 
-    <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;">       
+     <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;">       
         <thead>
             <tr  style="text-align:center;">
-                <th>Name</th>                
-                <th>Email</th>
-                <th>Mobile</th>
-              
+                <th>Name</th>
+                <th>Email</th>                
+                <th>Mobile</th> 
           </tr>
         </thead>
         <tbody  style="text-align:center;">
-              {{#each data}}      
-            <tr>
-                <td><i class="fa fa-user" aria-hidden="true"></i>  {{username}}</a></td>               
-                <td>{{email}}</td>
-                <td>{{mobile}}</td>
-                {{!-- <td><a  href='/deletemember/{{_id}}' class="confirmation"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td> --}}
-            </tr>
-            {{/each}}
+            
         </tbody> 
     </table>
    </div> 
+{{!--Get Group member list--}}
+   <script type="text/javascript">
+   $(document).ready(function(){
+              GetuserList();          
+           });
+   function GetuserList(){
+       $.ajax({
+           "url":'/groupmember',
+           "type":'Json',
+           "method":'GET',
+           success:function(content)
+           {        
+             $('#sampleTable').DataTable().destroy();                     
+               $('#sampleTable').DataTable({
+                   data:content,
+                   "columns":[
+                                { data:"username"},
+                                { data:"email" },
+                                { data:"mobile"}
+                   ]
+               });
 
-   <script>
+           },
+             error:function(msg)
+             {
+                 console.log(msg.responseText);
+             }
+
+       });
+   }
         //Search token details base on pair/token
         function myFunction() 
         {

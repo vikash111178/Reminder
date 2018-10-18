@@ -35,8 +35,8 @@ router.get('/login', function (req, res) {
 // Register User
 router.post('/register', function (req, res) {	
 	var username=req.body.username;
-			balance=0.01;
-			avgbalance=0.00;
+		balance=0.01;
+		avgbalance=0.00;
 		email=req.body.email;
 		mobile=req.body.mobile;
 		password=req.body.password;

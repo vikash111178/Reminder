@@ -1,11 +1,11 @@
 <br/>
 <div>
-<form action="/updateprofile/upload" method="POST" enctype="multipart/form-data" runat="server">
+<form action="/updateprofile/upload" method="POST" enctype="multipart/form-data" runat="server"  onsubmit="return Checkfiles();">
  <div class="container-fluid">
      <div>    <img id="imgprivew" src="../images/preview.png" width="150px" height="150px" alt="your image" /></div><br/>
      <div class="row">
          <div class="col-lg-2">
-                <input type="file" name="photo"  id="imgInp"></input>
+                <input type="file" name="photo"  id="imgInp" required></input>
          </div>        
      </div>
      <br>
@@ -20,6 +20,7 @@
 </div>
 <script src="/admin/vendor/jquery/jquery.min.js"></script>
 <script>
+    //Uploaded image preview
       function readURL(input) {
             if (input.files && input.files[0]) {
             var reader = new FileReader();            
@@ -32,6 +33,22 @@
     $("#imgInp").change(function(){
         readURL(this);
     });
-
+    //Check file type here...
+function Checkfiles()
+{
+        var fup = document.getElementById('imgInp');
+        var fileName = fup.value;
+        var ext = fileName.substring(fileName.lastIndexOf('.') + 1);
+        if(ext == "gif" || ext == "GIF" || ext == "JPEG" || ext == "jpeg" || ext == "jpg" || ext == "JPG" || ext == "doc")
+        {
+        return true;
+        } 
+        else
+        {
+        alert("Upload Gif or Jpg images only");
+        fup.focus();
+        return false;
+        }
+}
 </script>
 

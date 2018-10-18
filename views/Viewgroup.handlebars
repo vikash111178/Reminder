@@ -24,12 +24,12 @@
         <tbody  style="text-align:center;">
               {{#each data}}      
             <tr>
-               <td><a href="/addnewmember/{{_id}}" style="color:royalblue">Add Member</a></td>
+               <td><a href="/addnewmember/{{_id}}" style="color:royalblue;text-decoration: none;" title="Add new member in {{groupname}} to click here..!"><i class="fa fa-user-plus fa-1x" style="color:#DB6574;"></i> Add Member</a></td>
                 <td><a href="/viewmemberlist/{{_id}}" style="color:royalblue">{{groupname}}</a></td>
                 <td>{{total}}</td>               
                 <td>{{createdAt}}</td>
                 {{!-- <td><a href='viewmemberlist/{{_id}}'><i class="fa fa fa-group" aria-hidden="true" ></i>ViewMember</a></td> --}}
-                <td><a href='editgroup/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a> <a  href='/deletegroup/{{_id}}' class="confirmation"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a></td>
+                <td><a href='editgroup/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" title="Edit"></i></a> <a  href='/deletegroup/{{_id}}' class="confirmation"><i class="fa fa-trash fa-2x" aria-hidden="true" title="Delete"></i></a></td>
             </tr>
             {{/each}}
         </tbody> 

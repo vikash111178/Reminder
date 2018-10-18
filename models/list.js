@@ -2,21 +2,12 @@ var mongoose = require('mongoose');
 
 //Token Schema
 var ListSchema = mongoose.Schema({
-    userid: {
-        type: String
-    },
-    username:{
-        type: String
-    },
-    productname: {
-        type:String
-    },
-    productprice: {
-        type:Number,
-        
-    },
-    groupid:{type:String}
-     
+    userid: {type:String},
+    username:{type: String},
+    productname:{type:String},
+    productprice:{type:Number},
+    groupid:{type:String},
+    path:{type:String}    
 });
 
 var listToken = module.exports = mongoose.model('List', ListSchema);

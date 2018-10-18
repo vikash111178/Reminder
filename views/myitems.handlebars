@@ -9,9 +9,9 @@
                     <a class="btn btn-secondar" href="/createList" ><i class="fa fa-plus-circle" style="color:darkgrey"></i> Add List</a>
                </span>
                
-               <body onload="datarow()">
+               <body>
            <div class="table-responsive"   > 
-            <table class="table table-striped table-sm" id="myListTable" style="width:100% !important;"  >       
+           <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;"> 
                     <thead>
                         <tr style="display:none" >
                             <td id="row">{{user.username}}</td>                
@@ -24,32 +24,63 @@
                         </tr>
                     </thead>
                     <tbody  style="text-align:center;">
-                        {{#each data}}
-                            <tr>                
-                                <td id="col">{{username}}</td>
-                                <td>{{productname}}</td>
-                                <td>{{productprice}}</td>
-                                <td id="col2">  
-                                <a  href='/editlist/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" style="display:none;text-decoration: none;"></i></a><n/> <a  href='/deleteitmlst/{{_id}}'><i class="fa fa-trash fa-2x" aria-hidden="true" style="display:none;text-decoration: none;"></i></a>               
-                            </tr>
-                    
-                        {{/each}}
-                           <tr><td ></td><td style="color:red;font-size:100%;">Total</td><td style="color:red;font-size:100%;"> {{user.selfSpand}}</td></tr>
+                        
                     </tbody> 
             </table>
-            
+              <table style="margin-left:65%;">
+               {{#each data}}
+                            <tr>            
+                                <td style="color:red;font-size: 15px;">{{totalprice}}</td>                                                          
+                            </tr>
+                        {{/each}}
+            </table>
    </div> 
    
 </body>
 
-   <script>
+   <script type="text/javascript">
+   $(document).ready(function(){
+          selfItem();
+   });
+   function selfItem()
+   {
+       $.ajax({
+               
+                "url":'/GetselfItemList',
+                "type":'JSON',
+                "method":'GET',
+                success:function(content){
+                                       
+                  $('#sampleTable').DataTable().destroy(); 
+                  $('#sampleTable').DataTable({
+                     data:content,
+                     "columns":[
+                                {data:'username'},
+                                {data:'productname'},
+                                {data:'productprice'},
+                                 {
+                                mRender: function (data, type, row) {                                  
+                                  
+                                       return '<a href=/editlist/'+row._id+' style="color:#c3c9ce;" title="Edit"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a>  <a href=/deleteitmlst/'+row._id+' onclick="return RemoveCurrencyList();" style="color:#c3c9ce;" title="Delete"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>' 
+                                    
+                                   
+                                }
+                               }         
+                               ]
+                       
+                  })
+                }
+                
+
+       });
+   }
         //Search token details base on pair/token
         function myFunction() 
         {
             var input, filter, table, tr, td, i;
             input = document.getElementById("myInput");
             filter = input.value.toUpperCase();
-            table = document.getElementById("myListTable");
+            table = document.getElementById("sampleTable");
             tr = table.getElementsByTagName("tr");
             for (i = 0; i < tr.length; i++) {
             td = tr[i].getElementsByTagName("td")[1];
@@ -76,43 +107,11 @@ function RemoveCurrencyList()
         }
 }
 
-function datarow()
-{
-    
-    var tr,table,i,j,ii,jj,celles,storevalues,values;
-     table = document.getElementById("myListTable");
-     tr = table.getElementsByTagName("tr");
-    for(i=0; i<=0; i++)
-    {
-        celles=tr[i].getElementsByTagName('td');
-        for(j=0; j<celles.length;j++)
-        {
-            if(celles[j].id=="row")
-            {
-            storevalues=celles[0].innerText;         
-            } 
 
-        }
-
-    }
-    for(ii=2; ii<tr.length;ii++)
-    {
-        celles=tr[ii].getElementsByTagName('td');
-        for(jj=0; jj<celles.length;jj++)
-        {
-            if(celles[jj].id=="col")
-            {
-                values=celles[jj].innerText
-           if(storevalues==values)
-           {
-             celles[3].getElementsByTagName("i")[0].style.display = "block";
-              celles[3].getElementsByTagName("i")[1].style.display = "block"
-           }
-            } 
-
-        }
-
-    }
-    //alert("hay",col.length);
-}
    </script>
+  <style>
+    table tr td:last {font-weight: bold;}  </style>   
+  
+   <script>
+      $("table tr td:last" ).before( "<span> Total- </span>" );
+</script>
