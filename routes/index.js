@@ -271,6 +271,7 @@ router.post('/newMember', function (req, res, next) {
   var username = req.body.fullname;
   var email = req.body.email;
   var mobile = req.body.mobile;
+  var bidamount = req.body.amount;
   var password = req.body.password;
   var conditionQuery = { groupid: groupid };
   var conditionQuerytotal = { _id: groupid };
@@ -294,6 +295,7 @@ router.post('/newMember', function (req, res, next) {
       username: username,
       email: email,
       mobile: mobile,
+      bidamount: bidamount,
       isAdmin: isAdmin,
       password: password
     });
@@ -315,7 +317,8 @@ router.post('/newMember', function (req, res, next) {
           User.count(conditionQuery, function (err, total) {
             var totalmemberlist = total + 1;//total member 
             //update total member in group document         
-            newValues = { $set: { total: totalmemberlist } };
+            newValues = { $set: { total: totalmemberlist } }
+            // console.log('checkdatat', conditionQuerytotal);
             Group.updateTotal(conditionQuerytotal, newValues, function (err, res) {
               if (err) throw err;
               console.log("Total  updated");

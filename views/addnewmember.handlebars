@@ -11,13 +11,20 @@
       <div class="tile-body">
         <form class="form-horizontal" method="POST" action="/newMember">
           <div><input type="hidden" name="groupid" value="{{data._id}}"></div>
-          <div><input type="hidden" name="groupid" value="{{data.limit}}"></div>
-          <div><input type="hidden" name="groupid" value="{{data.total}}"></div>
+          <div><input type="hidden" name="limit" value="{{data.limit}}"></div>
+          <div><input type="hidden" name="total" value="{{data.total}}"></div>
           <div class="form-group row">
             <label class="control-label col-md-3">Group Name</label>
-            <div class="col-md-7">
-              <input type="text" name="groupname" value="{{data.groupname}}" class="form-control col-md-12" readonly>
+            <div class="col-md-3">
+              <input type="text" name="groupname" title="Group Name" value="{{data.groupname}}" class="form-control col-md-12"
+                readonly>
+
             </div>
+            <div class="col-md-3"> <input type="text" name="biddate" title="Bid of Month" value="Bid-{{data.biddate}}"
+                class="form-control col-md-10" readonly></div>
+            <div class="col-md-3"> <input type="text" title="No. of Member in a Group" name="limit" value="Limit-{{data.limit}}"
+                class="form-control col-md-12" readonly></div>
+
           </div>
           <div class="form-group row">
             <label class="control-label col-md-3">Full Name</label>
@@ -40,6 +47,14 @@
               <input type="text" class="form-control col-md-12" rows="4" onkeypress="return isNumberKey(event)" value=""
                 placeholder="Enter your mobile" id="mobile" autocomplete="off" name="mobile" pattern="[2-9]{1}[0-9]{9}"
                 title="Phone number with 7-9 and remaing 9 digit with 0-9" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="control-label col-md-3">Pay Amount</label>
+            <div class="col-md-7">
+              <input type="number" class="form-control col-md-12" rows="4" onkeypress="return isNumberKey(event)" value="{{data.amount}}"
+                placeholder="Enter your bid amount" id="amount" autocomplete="off" name="amount" pattern="[2-9]{1}[0-9]{9}"
+                required readonly>
             </div>
           </div>
           <div class="form-group row">
