@@ -1,40 +1,52 @@
-
-  <div class="right-box">
-      <span class="search-box-div">   
-               <strong>Search:</strong> 
-               <input type="text" name="search" autocomplete="off"  id="myInput" onkeyup="myFunction()">
-               </span>  
-               <span>
-                    <a class="btn btn-secondar" href="/addgroup" ><i class="fa fa fa-plus-circle" style="color:darkgrey"></i> Create Group</a>
-               </span>
-               </div>
-  <div class="table-responsive"> 
-    <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;">       
+<div class="right-box">
+    <span class="search-box-div">
+        <strong>Search:</strong>
+        <input type="text" name="search" autocomplete="off" id="myInput" onkeyup="myFunction()">
+    </span>
+    <span>
+        <a class="btn btn-secondar" href="/addgroup"><i class="fa fa fa-plus-circle" style="color:darkgrey"></i> Create
+            Group</a>
+    </span>
+</div>
+<div class="table-responsive">
+    <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;">
         <thead>
-            <tr  style="text-align:center;">
+            <tr style="text-align:center;">
                 <th><i class="fa fa fa-plus-circle" style="color:darkgrey"></i> Add Member</th>
-                <th>Group Name</th> 
-                <th>Total</th>               
+                <th>Group Name</th>
+                <th>Total</th>
+                <th>Bid of Month</th>
+                <th>Limit</th>
+                <th>Amount</th>
+                {{!-- <th>Start-Date</th> --}}
                 <th>Create Date</th>
                 {{!-- <th>MemberList</th> --}}
                 <th>Action</th>
-                
-          </tr>
+
+            </tr>
         </thead>
-        <tbody  style="text-align:center;">
-              {{#each data}}      
+        <tbody style="text-align:center;">
+            {{#each data}}
             <tr>
-               <td><a href="/addnewmember/{{_id}}" style="color:royalblue;text-decoration: none;" title="Add new member in {{groupname}} to click here..!"><i class="fa fa-user-plus fa-1x" style="color:#DB6574;"></i> Add Member</a></td>
+                <td><a href="/addnewmember/{{_id}}" style="color:royalblue;text-decoration: none;" title="Add new member in {{groupname}} to click here..!"><i
+                            class="fa fa-user-plus fa-1x" style="color:#DB6574;"></i> Add Member</a></td>
                 <td><a href="/viewmemberlist/{{_id}}" style="color:royalblue">{{groupname}}</a></td>
-                <td>{{total}}</td>               
+                <td>{{total}}</td>
+                <td>{{limit}}</td>
+                <td>{{biddate}}</td>
+                <td>{{amount}}</td>
+                {{!-- <td>{{startdate}}</td> --}}
                 <td>{{createdAt}}</td>
-                {{!-- <td><a href='viewmemberlist/{{_id}}'><i class="fa fa fa-group" aria-hidden="true" ></i>ViewMember</a></td> --}}
-                <td><a href='editgroup/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" title="Edit"></i></a> <a  href='/deletegroup/{{_id}}' class="confirmation"><i class="fa fa-trash fa-2x" aria-hidden="true" title="Delete"></i></a></td>
+                {{!-- <td><a href='viewmemberlist/{{_id}}'><i class="fa fa fa-group" aria-hidden="true"></i>ViewMember</a></td>
+                --}}
+                <td><a href='editgroup/{{_id}}'><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true" title="Edit"></i></a>
+                    <a href='/deletegroup/{{_id}}' class="confirmation"><i class="fa fa-trash fa-2x" aria-hidden="true"
+                            title="Delete"></i></a></td>
             </tr>
             {{/each}}
-        </tbody> 
+        </tbody>
     </table>
-   </div> 
+</div>
 <script type="text/javascript">
     var elems = document.getElementsByClassName('confirmation');
     var confirmIt = function (e) {
@@ -44,25 +56,24 @@
         elems[i].addEventListener('click', confirmIt, false);
     }
 
-  
-//Search token details base on pair/token
-function myFunction() 
-{
-    var input, filter, table, tr, td, i;
-    input = document.getElementById("myInput");
-    filter = input.value.toUpperCase();
-    table = document.getElementById("sampleTable");
-    tr = table.getElementsByTagName("tr");
-    for (i = 0; i < tr.length; i++) {
-    td = tr[i].getElementsByTagName("td")[0];
-    if (td) {
-    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
-    tr[i].style.display = "";
-    } else {
-    tr[i].style.display = "none";
+
+    //Search token details base on pair/token
+    function myFunction() {
+        var input, filter, table, tr, td, i;
+        input = document.getElementById("myInput");
+        filter = input.value.toUpperCase();
+        table = document.getElementById("sampleTable");
+        tr = table.getElementsByTagName("tr");
+        for (i = 0; i < tr.length; i++) {
+            td = tr[i].getElementsByTagName("td")[0];
+            if (td) {
+                if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                    tr[i].style.display = "";
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
+        }
+
     }
-    }       
-    }
-    
-}
 </script>

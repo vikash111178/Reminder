@@ -1,0 +1,118 @@
+{{!-- Memberdetails.js --}}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+<div class="right-box">
+    <span class="search-box-div">
+        <strong>Search:</strong>
+        <input type="text" name="search" autocomplete="off" id="myInput" onkeyup="myFunction()">
+    </span>
+
+    <body>
+        <div class="table-responsive">
+            <table class="table table-striped table-sm" id="sampleTable" style="width:100% !important;">
+                <thead>
+                    <tr style="display:none">
+                        <td id="row">{{user.username}}</td>
+                    </tr>
+                    <tr style="text-align:center;">
+                        <th><i class="fa fa-plus-circle" aria-hidden="true"></i> Add Member</th>
+                        <th>User Name</th>
+                        <th>Group Name</th>
+                        <th>Email</th>
+                        <th>Mobile No.</th>
+
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody style="text-align:center;">
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </body>
+
+    <script type="text/javascript">
+        $(document).ready(function () {
+            selfItem();
+        });
+        function selfItem() {
+            $.ajax({
+
+                "url": '/GetMemberdetails',
+                "type": 'JSON',
+                "method": 'GET',
+                success: function (content) {
+
+                    $('#sampleTable').DataTable().destroy();
+                    $('#sampleTable').DataTable({
+                        data: content,
+                        "columns": [
+                            {
+                                mRender: function (data, type, row) {
+
+                                    return '<a href=/addnewmember/' + row.groupid + ' style="color:#4169e1;" title="Add Member"><i class="fa fa-plus-circle" aria-hidden="true"></i> Add Member</a> '
+
+
+                                }
+                            },
+                            { data: 'username' },
+                            { data: 'groupname' },
+                            { data: 'email' },
+                            { data: 'mobile' },
+                            {
+                                mRender: function (data, type, row) {
+
+                                    return '<a href=/editlist/' + row._id + ' style="color:#c3c9ce;" title="Edit"><i class="fa fa-pencil-square-o fa-2x" aria-hidden="true"></i></a>  <a href=/deleteitmlst/' + row._id + ' onclick="return RemoveCurrencyList();" style="color:#c3c9ce;" title="Delete"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></a>'
+
+                                }
+                            }
+                        ]
+
+                    })
+                }
+
+
+            });
+        }
+        //Search token details base on pair/token
+        function myFunction() {
+            var input, filter, table, tr, td, i;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("sampleTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td")[1];
+                if (td) {
+                    if (td.innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        tr[i].style.display = "";
+                    } else {
+                        tr[i].style.display = "none";
+                    }
+                }
+            }
+
+        }
+        //Delete record alert message.
+        function RemoveCurrencyList() {
+            if (confirm("Are you sure you want to delete?") == true) {
+                return true;
+            }
+            else {
+                return false;
+            }
+        }
+
+
+    </script>
+    <style>
+        table tr td:last {
+            font-weight: bold;
+        }
+    </style>
+
+    <script>
+        $("table tr td:last").before("<span> Total- </span>");
+    </script>
