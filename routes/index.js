@@ -709,11 +709,27 @@ router.get('/GetMemberdetails', ensureAuthenticated, (req, res) => {
 //Get Group details in user
 
 router.get('/usergroupdetail', function (req, res, next) {
+
   var usergroupid = req.user.groupid;
   conditionQueryGroupName = { _id: usergroupid }
-  Group.find(conditionQueryGroupName, (err, content) => {
-    res.render('usergroupsdetails', { data: content[0] });
+  User.aggregate([
+    {
+      $match: { groupid: usergroupid.toString() }
+    },
+    {
+      $group: { _id: 'null', bidamount: { $sum: "$bidamount" } }
+    }
+  ], function (err, gettotalbidamount) {
+    if (err) throw (err);
+    //var bidAmountTotal = gettotalbidamount[0].bidamount;
+    // console.log(totalbidamount);
+    Group.find(conditionQueryGroupName, (err, content) => {
+      var TotalBidamount = content.concat(gettotalbidamount)
+      res.render('usergroupsdetails', { data: TotalBidamount });
+      console.log(TotalBidamount);
+    })
   })
+
 
 })
 

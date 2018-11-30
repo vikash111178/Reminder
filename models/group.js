@@ -11,6 +11,7 @@ var GroupSchema = mongoose.Schema({
     startdate: { type: Date },
     biddate: { type: String },
     amount: { type: Number },
+
     createdAt: { type: Date, default: Date.now }
 
 });
