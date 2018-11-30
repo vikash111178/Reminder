@@ -732,7 +732,27 @@ router.get('/usergroupdetail', function (req, res, next) {
 
 
 })
+// //Delete MemberDetails
+// router.get('/deleteMemberdetails/:id', function (req, res) {
+//   var db = req.db;
+//   var uid = req.params.id.toString();
+//   var conditionQuery = { _id: uid };
+//   try {
 
+//     User.deleteToken(conditionQuery, function (err, res) {
+//       if (err) throw err;
+//       console.log("1 document delete");
+
+//     });
+//     res.redirect('/memberdetails');
+//   }
+//   catch (error) {
+//     req.flash('error_msg', error.toString());
+//     res.redirect('error');
+//   }
+
+// });
+//********************Ens******************/
 //Api for get item groupdetails
 // router.get('/GetGroupdetails', ensureAuthenticated, (req, res) => {
 //   var userid = req.user._id;
